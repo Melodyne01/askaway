@@ -16,7 +16,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SecurityController extends AbstractController
 {
-    #[Route('/register', name: 'register')]
+    #[Route('/admin/register', name: 'register')]
     public function register(Request $request, ManagerRegistry $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
         //Creation d'un nouvel objet User
@@ -40,7 +40,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('login');
         }
 
-        return $this->render('security/register.html.twig', [
+        return $this->render('admin/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }

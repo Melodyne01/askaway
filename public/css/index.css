@@ -1,0 +1,9 @@
+.card{
+    display: grid;
+    place-items: center;
+    height: 30vh;
+    margin-top: 30vh;
+}
+.logo img{
+    width: 500px;
+}

@@ -19,9 +19,12 @@
             <div class="navbar">
                 <div class="links">
                     <a href="{{path('home')}}" class="link">Home</a>
-                    <a href="#" class="link">Top</a>
-                    <a href="#" class="link">Search</a>
-                    <a href="{{path('login')}}" class="link">Login</a>
+                    <a href="#" class="link">Top articles</a>
+                    {% if app.user %}
+                    <a href="{{path('userprofile', {id:app.user.id})}}" class="link">Profile</a>
+                    {% else %}
+                    <a href="{{path('login')}}" class="link">Login</a> 
+                    {% endif %}
                 </div>
             </div>
         </header>

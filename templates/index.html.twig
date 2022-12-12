@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet" />
+{% endblock %}
 {% block body %}
-Index
+<div class="card">
+    <div class="logo">
+        <img src="{{ asset('image/logo.png') }}" alt="logo askaway">
+    </div>
+    <div class="input">
+        <div class="label">Search</div>
+        <input type="search">
+    </div>
+</div>
 {% endblock %}
