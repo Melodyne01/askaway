@@ -1,0 +1,22 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.navbar{
+}
+.links{
+    text-align: center;
+    padding: 10px;
+}
+.link{
+    text-decoration: none;
+    color: black;
+    padding: 5px 10px;
+    border-bottom: 2px solid transparent;
+}
+.link:hover{
+    border-bottom: 2px solid black;
+}
+body{
+    background-color:rgb(216, 216, 216)
+}

@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/menu.css') }}" rel="stylesheet" />
+{% endblock %}
+{% block body %}
+<div class="container">
+    <center>
+        <div class="adminLinks" id="links">
+            <a onclick="showLoader()" href="{{path ('orders')}}">
+                <div class="link">
+                    <div class="title">
+                        Commandes
+                    </div>
+                </div>
+            </a>
+        <div class="adminLinks" id="links">
+            <a onclick="showLoader()" href="{{path ('addresses')}}">
+                <div class="link">
+                    <div class="title">
+                        Adresses
+                    </div>
+                </div>
+            </a>
+            <a onclick="showLoader()" href="{{path ('admin_products')}}">
+                <div class="link">
+                    <div class="title">
+                        Produits
+                    </div>
+                </div>
+            </a>
+            <a onclick="showLoader()" href="{{path ('admin_userList')}}">
+                <div class="link">
+                    <div class="title">
+                        Utilisateurs
+                    </div>
+                </div>
+            </a>
+            <a onclick="showLoader()" href="{{path ('admin_addNews')}}">
+                <div class="link">
+                    <div class="title">
+                        Ajouter nouvautés
+                    </div>
+                </div>
+            </a>
+            <a onclick="showLoader()" href="{{path('userInfos', {id: user.id})}}">
+                <div class="link">
+                    <div class="title">
+                        Infos personnelles
+                    </div>
+                </div>
+            </a>
+            <a onclick="showLoader()" href="{{path('admin_charts')}}">
+                <div class="link">
+                    <div class="title">
+                        Statistiques
+                    </div>
+                </div>
+            </a>
+            <a onclick="showLoader()" href="{{ path('logout')}}">
+                <div class="link">
+                    <div class="title">
+                        Se déconnecter
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="backBtn">
+            <a onclick="showLoader()" href="{{path('home')}}">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                </svg></a>
+        </div>
+    </center>
+</div>
+{% endblock %}

@@ -2,11 +2,12 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Askaway{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        <link href="{{ asset('css/base.css') }}" rel="stylesheet" />
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            
         {% endblock %}
 
         {% block javascripts %}
@@ -14,6 +15,22 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header>
+            <div class="navbar">
+                <div class="links">
+                    <a href="{{path('home')}}" class="link">Home</a>
+                    <a href="#" class="link">Top</a>
+                    <a href="#" class="link">Search</a>
+                    <a href="{{path('login')}}" class="link">Login</a>
+                </div>
+            </div>
+        </header>
+        <main>
+            <section>
+                <h1 class="hiddenTitle">{% block hiddenTitle %}{% endblock %}</h1>
+                {% block body %}{% endblock %}
+            </section>
+        </main>
+        
     </body>
 </html>
