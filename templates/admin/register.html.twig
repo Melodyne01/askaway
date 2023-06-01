@@ -2,12 +2,12 @@
 
 {% block stylesheets %}
 <link href="{{ asset('css/security/login.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/form.css') }}" rel="stylesheet" />
 
 {% endblock %}
 
 {% block body %}
-<div class="registerCard">
-
+<section class="form">
     {{ form_start(registrationForm) }}
 
     <div class="names">
@@ -27,7 +27,5 @@
         <button onclick="showLoader()" type="submit">S'inscrire</button>
     </div>
     {{ form_end(registrationForm) }}
-    <div class="toLogin">
-    <p>Vous avez déjà un compte ?? <a onclick="showLoader()" href="{{path('login')}}">Connectez-vous</a></p>
-</div>
+</section>
 {% endblock %}

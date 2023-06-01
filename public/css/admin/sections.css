@@ -1,0 +1,7 @@
+.line1 input, .line2 input, .line2 select{
+    width: 32vh;
+}
+
+@media screen and (max-width: 1250px) {
+
+}

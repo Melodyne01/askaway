@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/admin/admin.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/index.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/form.css') }}" rel="stylesheet" />
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block body %}
+<section class="form">
+    {{ form_start(form) }}
+    <div class="names">
+        {{ form_row(form.firstname, {'attr':{'placeholder':'Prénom'}}) }}
+        {{ form_row(form.lastname, {'attr':{'placeholder':'Nom de famille'}}) }}
+    </div>
+    <div class="email">
+        {{ form_row(form.email, {'attr':{'placeholder':'Adresse e-mail'}}) }}
+    </div>
+    <div class="passwords">
+        {{ form_row(form.password, {'attr':{'placeholder':'Mot de passe'}}) }}
+        {{ form_row(form.confirmPassword, {'attr':{'placeholder':'Confirmer mot de passe'}}) }}
+    </div>
+    <br>
+    <div class="registerBtn">
+        <button onclick="showLoader()" type="submit">S'inscrire</button>
+    </div>
+    {{ form_end(form) }}
+</section>
+{% endblock %}

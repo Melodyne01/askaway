@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -36,6 +38,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $createdAt = null;
 
     public $confirmPassword;
+
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Section::class)]
+    private Collection $sections;
+
+    public function __construct()
+    {
+        $this->sections = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -128,7 +138,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @return mixed
 	 */
 	function eraseCredentials() {
-    }
+                            }
 	
 	/**
 	 * Returns the identifier for this user (e.g. its username or email address).
@@ -136,6 +146,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @return string
 	 */
 	function getUserIdentifier(): string {
-        return $this->getId();
+                                return $this->getId();
+                            }
+
+    /**
+     * @return Collection<int, Section>
+     */
+    public function getSections(): Collection
+    {
+        return $this->sections;
+    }
+
+    public function addSection(Section $section): self
+    {
+        if (!$this->sections->contains($section)) {
+            $this->sections->add($section);
+            $section->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSection(Section $section): self
+    {
+        if ($this->sections->removeElement($section)) {
+            // set the owning side to null (unless already changed)
+            if ($section->getCreatedBy() === $this) {
+                $section->setCreatedBy(null);
+            }
+        }
+
+        return $this;
     }
 }

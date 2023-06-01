@@ -1,9 +1,51 @@
-.card{
+.logoCard{
     display: grid;
     place-items: center;
-    height: 30vh;
+    height: 35vh;
     margin-top: 30vh;
 }
+.logo{
+    width: 100%;
+    text-align: center;
+}
 .logo img{
-    width: 500px;
+    width: 50%;
+}
+.articles{
+    text-align: center;
+}
+.articles .title{
+    padding: 20px;
+    font-size: 24px;
+}
+.article{
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+}
+.card{
+    width: 350px;
+    margin: 15px;
+    border-radius: 10px;
+    border: 2px solid var(--primary-lighter);
+    position: relative;
+}
+.card .title p{
+    text-align: justify;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+.card .date p{
+    position: absolute;
+    bottom: 2%;
+    right: 2%;
+    font-size: 10px;
+    color: var(--primary-lighter);
+}
+.card img{
+    width: 100%;
+    border-radius: 10px 10px 0px 0px;
+}
+.card:hover{
 }

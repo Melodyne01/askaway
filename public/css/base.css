@@ -1,23 +1,68 @@
+:root {
+    --primary: #1d1d1d;
+    --primary-lighter: #3b3b3b;
+    --black: #000000;
+    --white: #ffffff;
+    --red: #ee7575;
+}
+
 *{
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--white);
+    
 }
 
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+    padding: 10px;
+  
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary-lighter);
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-lighter);; 
+  }
+a{
+    text-decoration: none;
+}
+body{
+    background-color:var(--primary);
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+
+}
+main{
+    min-height: 80vh;
+}
+.backBtn{
+    position: fixed;
+    top: 10px;
+    left: 2%;
+    width: 30px;
+    fill: white;
+}
+header svg{
+    fill: white;
+    width: 30px;
+}
 .links{
     text-align: center;
     padding: 10px;
 }
 .link{
     text-decoration: none;
-    color: black;
-    padding: 5px 10px;
-    border-bottom: 2px solid transparent;
+    padding: 5px 30px;
 }
 .link:hover{
-    border-bottom: 2px solid black;
-}
-body{
-    background-color:rgb(216, 216, 216)
 }
 .errorMessage{
     text-align: center;
@@ -26,10 +71,31 @@ body{
 .input input{
     border-radius: 10px;
     padding: 10px;
-    border: none;
+    width: 250px;
     margin: 10px;
+}
+.input input:hover{
 }
 .input .label{
     font-size: 12px;
     margin: 5px;
+}
+
+.navbar .title{
+    text-align: center;
+    font-size: 30px;
+    padding: 20px;
+}
+.delete{
+    text-align: center;
+    padding: 20px;
+}
+.delete a{
+    color: var(--red);
+}
+footer{
+    height: 200px;
+    background-color: var(--primary-lighter);
+    margin-top: 100px;
+
 }

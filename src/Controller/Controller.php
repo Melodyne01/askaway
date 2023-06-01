@@ -2,34 +2,68 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\User;
+use App\Entity\Article;
+use App\Entity\Visitor;
+use App\Repository\ArticleRepository;
+use App\Repository\SectionRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class Controller extends AbstractController
 {
+    private $manager;
+    public function __construct(ManagerRegistry $manager)
+    {
+        $this->manager = $manager;
+    }
     #[Route('/', name: 'home')]
-    public function index(): Response
+    public function index(ArticleRepository $articleRepo): Response
     {
-        return $this->render('/index.html.twig', [
-            'controller_name' => 'Controller',
-        ]);
-    }
-     #[Route('user/userprofile/{id}', name: 'userprofile')]
-    public function userprofile(User $user): Response
-    {
-        if ($this->getUser()->getRoles()[0] == "ROLE_ADMIN"){
-            return $this->redirectToRoute('admin', [
-            'id' => $this->getUser()->getUserIdentifier()
-        ]);
-        }
-        if (!$this->getUser() || $this->getUser()->getUserIdentifier() != $user->getId()) {
-            throw $this->createAccessDeniedException();
-        }
+        $articles = $articleRepo->findAll();
         
-        return $this->render('/user/userprofile.html.twig', [
-            'user' => $user
+        return $this->render('/index.html.twig', [
+            "articles" => $articles
         ]);
     }
+    #[Route('/articles', name: 'articles')]
+    public function articles(): Response
+    {
+        return $this->render('/articles.html.twig', [
+            
+        ]);
+    }
+    #[Route('/article/{id}/{slug}', name: 'article')]
+    public function article(Article $article, SectionRepository $sectionRepo): Response
+    {
+        $this->addVisit($article);
+
+        $sectionByArticle = $sectionRepo->findAllByArticle($article);
+        return $this->render('/article.html.twig', [
+            'article' =>$article,
+            'sections' => $sectionByArticle
+        ]);
+    }
+    public function addVisit(string $page)
+    {
+       if ($this->getUser() == null) {
+            $visitor = new Visitor();
+            //$ip = $_SERVER['HTTP_X_FORWARED_FOR'];
+            $ip = "2a02:a03f:600f:a800:ac20:d559:f642:6c17";
+            $details = json_decode(file_get_contents("http://ip-api.com/json/{$ip}"));
+            $visitor->setIp(substr($ip, -9));
+            $visitor->setPage($page);
+            $visitor->setCity($details->city);
+            $visitor->setRegion($details->region);
+            $visitor->setCountry($details->country);
+            $visitor->setVisitedAt(new DateTime('Europe/Paris'));
+
+            $this->manager->getManager()->persist($visitor);
+            $this->manager->getManager()->flush();
+        }
+    }
+    
 }

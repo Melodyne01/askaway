@@ -1,0 +1,53 @@
+form{
+    text-align: center;
+    background-color: var(--primary-lighter);
+    padding: 20px;
+    margin-bottom: 10px;
+}
+form .title{
+    font-size: 30px;
+    color: var(--white);
+    padding: 20px;
+}
+input, select, button, option, textarea{
+    padding: 10px;
+    width: 250px;
+    margin: 15px;
+    color: white;
+    background-color: var(--primary);
+    border: none;
+}
+input{
+    width: 230px;
+}
+textarea{
+    resize: none;
+}
+label{
+    display: none;
+}
+button:hover{
+    opacity: 80%;
+}
+.lines{
+    text-align: center;
+    width: 100%;
+}
+.line1, .line2, .line3, .line4{
+    display: inline-flex;
+}
+#body{
+    display: block;
+}
+#body textarea{
+    width: 80%;
+    height: 200px;
+}
+.imageList table{
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+}
+.imageList img{
+    width: 250px;
+}

@@ -74,6 +74,20 @@ class SecurityController extends AbstractController
             "error" => $error
         ]);
     }
+    #[Route('user/userprofile/{id}', name: 'userprofile')]
+    public function userprofile(User $user): Response
+    {
+        if ($this->getUser()->getRoles()[0] == "ROLE_ADMIN"){
+            return $this->redirectToRoute('admin');
+        }
+        if (!$this->getUser() || $this->getUser()->getUserIdentifier() != $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
+        
+        return $this->render('/user/userprofile.html.twig', [
+            'user' => $user
+        ]);
+    }
 
 
     #[Route('/autoRedirect', name: 'autoRedirect')]

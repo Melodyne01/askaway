@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/form.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/article.css') }}" rel="stylesheet" />
+{% endblock %}
+{% block body %}
+<section class="articleForm">
+    {{ form_start(articleForm) }}
+    <div class="title">Modifier l'article</div>
+    <div class="lines">
+        <div class="line1">
+            {{ form_row(articleForm.title, {'attr':{'placeholder':'Title'}}) }}
+            {{ form_row(articleForm.categorie) }}
+        </div>
+        <br>
+        <div class="line2">
+            {{ form_row(articleForm.image) }}
+        </div>
+    </div>
+
+    <div class="btn">
+        <button type="submit">Modifier l'article</button>
+    </div>
+    {{ form_end(articleForm) }}
+</section>
+{% if article.image %}
+<section class="imageList">
+    <table>
+        <tr>
+            <td class="photo"><img src="{{ asset('/upload/'~ article.image)}}" alt=""></td>
+            <td class="delete"><a href="{{ path('deleteArticleImage', {id: article.id}) }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                    </svg></a></td>
+        </tr>
+    </table>
+</section>
+{% endif %}
+<section class="sectionForm">
+    {{ form_start(sectionForm) }}
+    <div class="title">Ajouter une section</div>
+    <div class="lines">
+        <div class="line1">
+            {{ form_row(sectionForm.title, {'attr':{'placeholder':'Title'}}) }}
+            {{ form_row(sectionForm.link, {'attr':{'placeholder':'Link'}}) }}
+        </div>
+        <br>
+        <div class="line2">
+            {{ form_row(sectionForm.image) }}
+            {{ form_row(sectionForm.position) }}
+        </div>
+        <br>
+        <div class="line3" id="body">
+            {{ form_row(sectionForm.body, {'attr':{'placeholder':'Body'}}) }}
+        </div>
+    </div>
+
+    <div class="btn">
+        <button type="submit">Ajouter à l'article</button>
+    </div>
+    {{ form_end(sectionForm) }}
+</section>
+<section class="sections">
+    {% for section in sections %}
+        <a href="{{path('admin_section', {id:section.id})}}">
+            <div class="section">
+                <div class="title">
+                    {{section.title}}
+                </div>
+                {% if section.image %}
+                <div class="image">
+                    <img src="{{ asset('/upload/'~ section.image)}}" alt="{{section.title}} image">
+                </div>
+                {% endif %}
+                <div class="body">
+                    {{section.body}}
+                </div>
+                {% if section.link %}
+                <div class="link">
+                    {{section.link}}
+                </div>
+                {% endif %}
+            </div>
+        </a>
+    {% endfor %}
+</section>
+<section class="delete">
+    <a href="{{path('deleteArticle', {id:article.id})}}">Supprimer l'article</a>
+</section>
+{% endblock %}

@@ -1,0 +1,21 @@
+.categories{
+    display: inline-block;
+    background-color: var(--primary-lighter);
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+}
+.categories a{
+    color: white;
+    text-decoration: none;
+}
+.categorie{
+    padding: 50px;
+    background-color: var(--primary);
+    margin: 10px;
+    width: 20%;
+    display: inline-block;
+}
+.categories a:hover{
+    opacity: 80%;
+}
