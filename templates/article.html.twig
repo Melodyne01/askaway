@@ -3,6 +3,7 @@
 {% block head %}
 <title>{{article.title}}</title>
 <meta name="description" content="{{metaDesc}}">
+<meta name="robots" content="index">
 {% endblock %}
 
 {% block stylesheets %}
@@ -45,7 +46,7 @@
     </div>
 </section>
 <div class="backBtn">
-    <a href="{{path('home')}}">
+    <a href="{{path('home')}}" aria-label="Page home">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left-circle-fill"
             viewBox="0 0 16 16">
             <path

@@ -3,9 +3,7 @@
     text-align: center;
 }
 .image img{
-    height: 80vh;
-    overflow-x: hidden;
-
+    width: 100vh;
 }
 .overlay{
     position: absolute;
@@ -37,4 +35,67 @@
 .section .body{
     font-size: 24px;
     padding: 10px;
+}
+@media screen and (max-width:1150px) {
+    .image img{
+        width: 100%;
+    }
+    .overlay{
+        width: 80%;
+    }
+    .overlay .title {
+        font-size: 28px;
+    }
+    .section .title{
+        font-size: 22px;
+    }
+    .section .body{
+        font-size: 18px;
+    }
+}
+@media screen and (max-width:767px) {
+    .image img{
+        width: 100%;
+    }
+    .overlay{
+        width: 80%;
+        padding: 30px;
+    }
+    .overlay .title {
+        font-size: 26px;
+    }
+    .section .title{
+        font-size: 20px;
+        padding: 20px 5px;
+    }
+    .sections{
+        width: 80%;
+    }
+    .section .body{
+        font-size: 12px;
+        padding: 5px;
+    }
+}
+@media screen and (max-width:550px) {
+    .image img{
+        width: 100%;
+    }
+    .overlay{
+        width: 60%;
+        padding: 15px;
+    }
+    .overlay .title {
+        font-size: 18px;
+    }
+    .sections{
+        width: 90%;
+    }
+    .section .title{
+        font-size: 18px;
+        padding: 20px 5px;
+    }
+    .section .body{
+        font-size: 12px;
+        padding: 5px;
+    }
 }
