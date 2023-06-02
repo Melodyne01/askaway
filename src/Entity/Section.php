@@ -16,7 +16,7 @@ class Section
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
     #[ORM\Column(length: 1000)]
@@ -39,6 +39,9 @@ class Section
 
     #[ORM\ManyToOne(inversedBy: 'sections')]
     private ?User $createdBy = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $linkName = null;
 
     public function getId(): ?int
     {
@@ -141,6 +144,18 @@ class Section
     public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getLinkName(): ?string
+    {
+        return $this->linkName;
+    }
+
+    public function setLinkName(?string $linkName): self
+    {
+        $this->linkName = $linkName;
 
         return $this;
     }

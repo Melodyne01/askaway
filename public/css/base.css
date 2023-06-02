@@ -38,10 +38,10 @@ body{
     background-color:var(--primary);
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
-
+    overflow-x: hidden;
 }
 main{
-    min-height: 80vh;
+    min-height: 100vh;
 }
 .backBtn{
     position: fixed;
@@ -60,25 +60,14 @@ header svg{
 }
 .link{
     text-decoration: none;
-    padding: 5px 30px;
+    padding: 20px 30px;
 }
 .link:hover{
+    opacity: 80%;
 }
 .errorMessage{
     text-align: center;
     padding: 10px;
-}
-.input input{
-    border-radius: 10px;
-    padding: 10px;
-    width: 250px;
-    margin: 10px;
-}
-.input input:hover{
-}
-.input .label{
-    font-size: 12px;
-    margin: 5px;
 }
 
 .navbar .title{
@@ -93,9 +82,12 @@ header svg{
 .delete a{
     color: var(--red);
 }
+.active svg{
+    fill: var(--primary-lighter);
+}
 footer{
-    height: 200px;
     background-color: var(--primary-lighter);
-    margin-top: 100px;
-
+    padding: 15px;
+    text-align: end;
+    margin-top: 50px;
 }

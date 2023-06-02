@@ -1,21 +1,36 @@
 .logoCard{
     display: grid;
     place-items: center;
-    height: 35vh;
     margin-top: 30vh;
 }
 .logo{
     width: 100%;
     text-align: center;
+    background-color: var(--primary-lighter);
 }
 .logo img{
     width: 50%;
 }
+.logoCard .searchbar{
+    padding: 30px;
+}
+.logoCard .label{
+    color: var(--primary-lighter);
+    padding: 10px 0px ;
+}
+.logoCard input{
+    padding: 10px;
+    width: 50vh;
+    color: white;
+    background-color: var(--primary-lighter);
+    border: none;
+}
 .articles{
     text-align: center;
+    margin: 30px;
 }
 .articles .title{
-    padding: 20px;
+    padding: 10px;
     font-size: 24px;
 }
 .article{
@@ -48,4 +63,5 @@
     border-radius: 10px 10px 0px 0px;
 }
 .card:hover{
+    opacity: 80%;
 }

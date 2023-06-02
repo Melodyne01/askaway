@@ -9,12 +9,13 @@
     <div class="title">Modifier l'article</div>
     <div class="lines">
         <div class="line1">
-            {{ form_row(articleForm.title, {'attr':{'placeholder':'Title'}}) }}
+            {{ form_row(articleForm.title, {'attr':{'placeholder':'Titre'}}) }}
             {{ form_row(articleForm.categorie) }}
         </div>
         <br>
         <div class="line2">
             {{ form_row(articleForm.image) }}
+            {{ form_row(articleForm.online) }}
         </div>
     </div>
 
@@ -42,17 +43,21 @@
     {{ form_start(sectionForm) }}
     <div class="title">Ajouter une section</div>
     <div class="lines">
-        <div class="line1">
-            {{ form_row(sectionForm.title, {'attr':{'placeholder':'Title'}}) }}
-            {{ form_row(sectionForm.link, {'attr':{'placeholder':'Link'}}) }}
+        <div class="line1" id="longInput">
+            {{ form_row(sectionForm.title, {'attr':{'placeholder':'Titre'}}) }}
         </div>
         <br>
         <div class="line2">
+            {{ form_row(sectionForm.linkName, {'attr':{'placeholder':'Nom du lien'}}) }}
+            {{ form_row(sectionForm.link, {'attr':{'placeholder':'Lien'}}) }}
+        </div>
+        <br>
+        <div class="line3">
             {{ form_row(sectionForm.image) }}
             {{ form_row(sectionForm.position) }}
         </div>
         <br>
-        <div class="line3" id="body">
+        <div class="line4" id="body">
             {{ form_row(sectionForm.body, {'attr':{'placeholder':'Body'}}) }}
         </div>
     </div>
@@ -66,9 +71,11 @@
     {% for section in sections %}
         <a href="{{path('admin_section', {id:section.id})}}">
             <div class="section">
+                {% if section.title %}
                 <div class="title">
                     {{section.title}}
                 </div>
+                {% endif %}
                 {% if section.image %}
                 <div class="image">
                     <img src="{{ asset('/upload/'~ section.image)}}" alt="{{section.title}} image">

@@ -84,4 +84,14 @@ class ArticleRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function findSuggestionsByKeyword(string $keyword): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.id','a.title', 'a.image', 'a.createdAt')
+            ->where('a.title LIKE :keyword')
+            ->setParameter('keyword', '%' . $keyword . '%')
+            ->getQuery()
+            ->getResult();
+        ;
+    }
 }

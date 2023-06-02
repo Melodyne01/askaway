@@ -17,8 +17,21 @@ input, select, button, option, textarea{
     background-color: var(--primary);
     border: none;
 }
+.hidden{
+    height: 300px;
+}
+.loginForm svg{
+    width: 20px;
+    fill: var(--primary);
+}
+.loginForm img{
+    width: 250px;
+}
 input{
     width: 230px;
+}
+#longInput input{
+    width: 510px;
 }
 textarea{
     resize: none;

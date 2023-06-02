@@ -1,4 +1,10 @@
 {% extends 'base.html.twig' %}
+
+{% block head %}
+<title>{{article.title}}</title>
+<meta name="description" content="{{metaDesc}}">
+{% endblock %}
+
 {% block stylesheets %}
 <link href="{{ asset('css/article.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/hideHeader.css') }}" rel="stylesheet" />
@@ -16,9 +22,11 @@
     <div class="sections">
         {% for section in sections %}
             <div class="section">
+                {% if section.title %}
                 <div class="title">
                     {{section.title}}
                 </div>
+                {% endif %}
                 {% if section.image %}
                 <div class="image">
                     <img src="{{ asset('/upload/'~ section.image)}}" alt="{{section.title}} image">
@@ -27,12 +35,11 @@
                 <div class="body">
                     {{section.body}}
                 </div>
-                {% if section.link %}
+                {% if section.link and section.linkName %}
                 <div class="link">
                     {{section.link}}
                 </div>
                 {% endif %}
-                
             </div>
         {% endfor %}
     </div>

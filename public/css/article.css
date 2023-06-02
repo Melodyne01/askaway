@@ -3,15 +3,18 @@
     text-align: center;
 }
 .image img{
-    width: 100%;
-    max-height: 100vh;
+    height: 80vh;
+    overflow-x: hidden;
+
 }
 .overlay{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90vh;
+    width: 80vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 30px;
 }
 .overlay .title {
     text-align: center;

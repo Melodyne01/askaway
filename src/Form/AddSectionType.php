@@ -17,7 +17,7 @@ class AddSectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class, array('label' => false))
+            ->add('title', TextType::class, array('label' => false, 'required' => false))
             ->add('image', FileType::class, [
                 'label' => false,
                 'multiple' => false,
@@ -25,6 +25,7 @@ class AddSectionType extends AbstractType
                 'required' => false
             ])
             ->add('body', TextareaType::class, array('label' => false))
+            ->add('linkName', TextType::class, array('label' => false, 'required' => false))
             ->add('link', TextType::class, array('label' => false, 'required' => false))
             ->add('position', ChoiceType::class, [
                 'label' => false,

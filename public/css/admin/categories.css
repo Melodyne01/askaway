@@ -1,9 +1,7 @@
 .categories{
-    display: inline-block;
     background-color: var(--primary-lighter);
     text-align: center;
     padding: 20px;
-    width: 100%;
 }
 .categories a{
     color: white;

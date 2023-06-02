@@ -63,12 +63,24 @@ class SectionRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-public function findAllByArticle($article): array
+        public function findAllByArticle($article): array
         {
             return $this->createQueryBuilder('s')
                 ->andWhere('s.article = :val')
                 ->setParameter('val', $article)
                 ->orderBy('s.position', 'ASC')
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+        public function findOneByArticle($article): array
+        {
+            return $this->createQueryBuilder('s')
+                ->select('s.body')
+                ->where('s.article = :val')
+                ->setParameter('val', $article)
+                ->orderBy('s.position', 'ASC')
+                ->setMaxResults(1)
                 ->getQuery()
                 ->getResult()
             ;

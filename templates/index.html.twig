@@ -1,22 +1,30 @@
 {% extends 'base.html.twig' %}
+
+{% block head %}
+<title>Askaway</title>
+<meta name="description" content="Explorez notre blog captivant et découvrez une multitude d'articles intéressants sur des sujets variés. Nous proposons des contenus riches et informatifs dans les domaines de la mode, de la cuisine, des voyages, de la technologie et bien plus encore. Plongez dans notre univers passionnant et trouvez l'inspiration pour enrichir votre quotidien. Rejoignez-nous dès maintenant et faites partie de notre communauté engagée">
+{% endblock %}
+
 {% block stylesheets %}
     <link href="{{ asset('css/index.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/hideHeader.css') }}" rel="stylesheet" />
-{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    {% endblock %}
 {% block body %}
 <section class="logoCard">
     <div class="logo">
         <img src="{{ asset('image/logo.png') }}" alt="logo askaway">
     </div>
-    <div class="input">
-        <div class="label">Search</div>
-        <input type="search">
+    <div class="searchbar">
+        <input type="text" id="searchInput" placeholder="Search..." />
+        
     </div>
 </section>
-<section class="articles">
+<section class="articles" id="suggestionsList">
     {% for article in articles %}
         <div class="article">
-            <a href="{{path('article', {id: article.id, slug: article.title|slugify})}}">
+            <a aria-label="linkToArticle" href="{{path('article', {id: article.id, slug: article.title|slugify})}}">
                 <div class="card">
                     <div class="image">
                         <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
@@ -32,4 +40,95 @@
         </div>
     {% endfor %}
 </section>
+{% endblock %}
+{% block js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var searchInput = document.getElementById('searchInput');
+    var suggestionsList = document.getElementById('suggestionsList');
+
+    searchInput.addEventListener('input', function() {
+        var keyword = searchInput.value;
+
+        // Make an AJAX request to the search suggestions endpoint
+        axios.get('/search/suggestions', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        params: {
+            keyword: keyword
+        }
+        })
+        .then(function(response) {
+        var suggestions = response.data;
+        console.log(response);
+        // Clear previous suggestions
+        suggestionsList.innerHTML = '';
+
+        var articles = document.createElement('div');
+            articles.className = 'articles';
+        // Append new suggestions to the suggestions list
+        suggestions.forEach(function(suggestion) {
+            // Créer les div enfants
+            var article = document.createElement('div');
+            article.className = 'article';
+
+            slug = suggestion.title.toLowerCase()
+            .replace(/[^a-z0-9 -]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .trim();
+            var link = document.createElement('a');
+            link.href= '/article/' + suggestion.id + '/' + slug;
+            // Créer les div enfants
+            var card = document.createElement('div');
+            card.className = 'card';
+
+            var image = document.createElement('div');
+            image.className = 'image';
+            
+            var img = document.createElement('img');
+            img.src = '/upload/' + suggestion.image
+            img.alt = suggestion.title +'image';
+
+            var title = document.createElement('div');
+            title.className = 'title';
+
+            var titleP = document.createElement('p');
+            titleP.textContent = suggestion.title;
+
+            var date = new Date(suggestion.createdAt.date);
+
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
+            var day = date.getDate().toString().padStart(2, '0');
+
+            var formattedDate = year + '-' + month + '-' + day;
+
+            var createdAt = document.createElement('div');
+            createdAt.className = 'date';
+
+            var createdAtP = document.createElement('p');
+            createdAtP.textContent = formattedDate;
+            // Ajouter les div enfants au div parent
+            articles.appendChild(article);
+            article.appendChild(link);
+            link.appendChild(card);
+            card.appendChild(image);
+            image.appendChild(img);
+            card.appendChild(title);
+            title.appendChild(titleP);
+            card.appendChild(createdAt);
+            createdAt.appendChild(createdAtP);
+
+        });
+        // Ajouter le div parent au document
+        suggestionsList.appendChild(articles);
+        })
+        .catch(function(error) {
+        console.error(error);
+        });
+    });
+    });
+</script>
 {% endblock %}

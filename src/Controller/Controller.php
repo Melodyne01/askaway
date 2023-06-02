@@ -9,8 +9,11 @@ use App\Entity\Visitor;
 use App\Repository\ArticleRepository;
 use App\Repository\SectionRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class Controller extends AbstractController
@@ -42,10 +45,23 @@ class Controller extends AbstractController
         $this->addVisit($article);
 
         $sectionByArticle = $sectionRepo->findAllByArticle($article);
+        $metaDesc = substr($sectionRepo->findOneByArticle($article)[0]["body"], 0, 150);
+
         return $this->render('/article.html.twig', [
             'article' =>$article,
-            'sections' => $sectionByArticle
+            'sections' => $sectionByArticle,
+            'metaDesc' => $metaDesc
         ]);
+    }
+    //Search bar Axios route
+    #[Route('/search/suggestions', name: 'search_suggestions')]
+    public function suggestions(Request $request, ArticleRepository $articleRepo, SerializerInterface $serializer): Response
+    {
+        $keyword = $request->query->get('keyword');
+
+        $suggestions = $articleRepo->findSuggestionsByKeyword($keyword);
+
+        return new JsonResponse($suggestions);
     }
     public function addVisit(string $page)
     {
