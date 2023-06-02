@@ -10,13 +10,16 @@
     </div>
     {% for article in articles %}
         <div class="article">
-            <a href="{{path('article', {id: article.id, slug: article.title|slugify})}}">
+            <a href="{{path('admin_sections', {id: article.id, slug: article.title|slugify})}}">
                 <div class="card">
                     <div class="image">
                         <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
                     </div>
                     <div class="title">
                         <p>{{article.title}}</p>
+                    </div>
+                    <div class="date">
+                        <p>{{article.createdAt|date("Y-m-d")}}</p>
                     </div>
                 </div>
             </a>

@@ -17,3 +17,12 @@
 .categories a:hover{
     opacity: 80%;
 }
+
+@media screen and (max-width:620px) {
+    .categorie{
+        width: 70%;
+        margin: 5px 0px;
+
+    }
+    
+}

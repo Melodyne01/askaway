@@ -10,9 +10,15 @@
 <section class="form">
     {{ form_start(form) }}
     <div class="title">Ajouter un article</div>
-    {{ form_row(form.title, {'attr':{'placeholder':'Title'}}) }}
-    {{ form_row(form.categorie) }}
-    {{ form_row(form.image) }}
+    <div class="line1">
+        {{ form_row(form.title, {'attr':{'placeholder':'Title'}}) }}
+        {{ form_row(form.categorie) }}
+    </div>
+    <br>
+    <div class="line2">
+        {{ form_row(form.image) }}
+        {{ form_row(form.online) }}
+    </div>
     <div class="btn">
         <button type="submit">Ajouter l'article</button>
     </div>
@@ -22,12 +28,20 @@
     {% for article in articles %}
         <div class="article">
             <a href="{{path('admin_sections', {id: article.id, slug: article.title|slugify})}}">
-                <div class="card">
+                {% if article.online %}
+                <div class="card" id="online">
+                {% else %}
+                <div class="card" id="offline">
+                {% endif %}
+                
                     <div class="image">
                         <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
                     </div>
                     <div class="title">
                         <p>{{article.title}}</p>
+                    </div>
+                    <div class="date">
+                        <p>{{article.createdAt|date("Y-m-d")}}</p>
                     </div>
                 </div>
             </a>

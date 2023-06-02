@@ -107,11 +107,7 @@ class AdminController extends AbstractController
             }
             $manager->getManager()->persist($article);
             $manager->getManager()->flush();
-            return $this->redirectToRoute('admin_sections', [
-                "id" => $article->getId(),
-                "slug" => $twig->getFilter('slugify')->getCallable()($article->getTitle())
-
-            ]);
+            return $this->redirectToRoute('admin'); 
         }
 
         $sections = $sectionRepo->findAllByArticle($article);

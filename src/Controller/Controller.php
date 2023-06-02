@@ -26,7 +26,7 @@ class Controller extends AbstractController
     #[Route('/', name: 'home')]
     public function index(ArticleRepository $articleRepo): Response
     {
-        $articles = $articleRepo->findAll();
+        $articles = $articleRepo->findAllOnline();
         
         return $this->render('/index.html.twig', [
             "articles" => $articles

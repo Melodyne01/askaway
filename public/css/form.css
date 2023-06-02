@@ -64,3 +64,19 @@ button:hover{
 .imageList img{
     width: 250px;
 }
+
+@media screen and (max-width:620px) {
+    .line1, .line2, .line3, .line4{
+        display: block;
+    }
+    #longInput input, input, #body textarea{
+        width: 90%;
+    margin: 5px;
+
+    }
+    select{
+        width: 96%;
+    margin: 5px;
+
+    }
+}

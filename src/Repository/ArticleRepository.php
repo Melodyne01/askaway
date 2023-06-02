@@ -73,13 +73,23 @@ class ArticleRepository extends ServiceEntityRepository
                 ->getResult()
             ;
         }
+    public function findAllOnline(): array
+        {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.online = :val')
+                ->setParameter('val', 1)
+                ->orderBy('a.id', 'DESC')
+                ->getQuery()
+                ->getResult()
+            ;
+        }
 
     public function findAllByCategory(Categorie $categeory): array
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.categorie = :val')
             ->setParameter('val', $categeory)
-            ->orderBy('a.title', 'ASC')
+            ->orderBy('a.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
@@ -90,6 +100,8 @@ class ArticleRepository extends ServiceEntityRepository
             ->select('a.id','a.title', 'a.image', 'a.createdAt')
             ->where('a.title LIKE :keyword')
             ->setParameter('keyword', '%' . $keyword . '%')
+            ->andWhere('a.online = :val')
+            ->setParameter('val', 1)
             ->getQuery()
             ->getResult();
         ;
