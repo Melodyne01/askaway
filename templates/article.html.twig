@@ -17,16 +17,19 @@
         <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
         <div class="overlay">
             <div class="title">
-                {{article.title}}
+                <h1>{{article.title}}</h1>
             </div>
         </div>
     </div>
     <div class="sections">
+        <div class="date">
+            Publié le : <time datetime="{{article.createdAt|date('Y-m-d H:i')}}">{{article.createdAt|date('Y-m-d H:i')}}</time>
+        </div>
         {% for section in sections %}
             <div class="section">
                 {% if section.title %}
                 <div class="title">
-                    {{section.title}}
+                    <h2>{{section.title}}</h2>
                 </div>
                 {% endif %}
                 {% if section.image %}
@@ -39,7 +42,7 @@
                 </div>
                 {% if section.link and section.linkName %}
                 <div class="link">
-                    {{section.link}}
+                    <a href="{{section.link}}">{{section.linkName}}</a>
                 </div>
                 {% endif %}
             </div>

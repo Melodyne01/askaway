@@ -14,7 +14,6 @@
 
 }
 .listChart{
-    width: 45vh;
     display: inline-block;
     vertical-align: top;
 }
@@ -47,17 +46,17 @@
 }
 
 .itemNbr, .itemName{
-    width: 100%;
     display: column;
     margin: 0px 10px;
 }
 .itemNbr{
     text-align: left;
+    width: 10vh;
 }
 
 .itemName{
     text-align: right;
-    width: 40vh;
+    width: 80vh;
 }
 
 @media screen and (max-width: 1250px) {

@@ -14,20 +14,23 @@
     background-color: rgba(0, 0, 0, 0.6);
     padding: 30px;
 }
-.overlay .title {
+.overlay .title h1{
     text-align: center;
     color: white;
     font-size: 45px;
     font-weight: bold;
 }
+.date{
+    margin: 15px 10px;
+}
 .sections{
     width: 60%;
-  margin: 0 auto;
+    margin: 0 auto;
 }
 .section{
     text-align: justify;
 }
-.section .title{
+.section .title h2{
     font-size: 40px;
     padding: 50px 10px;
     font-weight: bold;

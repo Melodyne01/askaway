@@ -61,7 +61,7 @@ header svg{
     text-align: center;
     padding: 10px;
 }
-.link{
+header .link{
     text-decoration: none;
     padding: 30px 30px;
 }
@@ -90,9 +90,9 @@ header svg{
 }
 footer{
     background-color: var(--primary-lighter);
-    padding: 15px;
     text-align: end;
     margin-top: 50px;
+    padding: 15px;
 }
 #online{
     background-color: var(--online)

@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
+{% block head %}
+<title>Askaway | Admin</title>
+<meta name="robots" content="noindex">
+{% endblock %}
+
 {% block stylesheets %}
 <link href="{{ asset('css/admin/admin.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/index.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/form.css') }}" rel="stylesheet" />
 {% endblock %}
-{% block header %}
-{% endblock %}
+
 {% block body %}
 <section class="form">
     {{ form_start(form) }}
