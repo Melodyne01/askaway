@@ -25,6 +25,12 @@ jobs:
       with:
         php-version: '8.0'
     - uses: actions/checkout@v3
+    - name: Install projet on server
+      run: |
+        cd /var/www/html/prod/
+        git clone https://github.com/tbaldewyns/askaway.git
+        chmod -R 777 askaway
+        cd askaway
     - name: Install Composer
       run: php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     - name: Test Composer installation
