@@ -4,63 +4,35 @@
 # documentation.
 
 name: Symfony
-
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
+    branches:
+      - main  # Nom de la branche à surveiller pour les modifications
 
 jobs:
-  symfony-prod:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest  # Utilisez la dernière version d'Ubuntu
+
     steps:
-    #  To automatically get bug fixes and new Php versions for shivammathur/setup-php,
-    # change this to (see https://github.com/shivammathur/setup-php#bookmark-versioning):
-    # uses: shivammathur/setup-php@v2
-    - uses: shivammathur/setup-php@2cb9b829437ee246e9b3cac53555a39208ca6d28
-      with:
-        php-version: '8.0'
-    - name: Deploy to VPS
-      uses: actions/checkout@v3
-      with:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Récupère le code du référentiel
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'  # Version PHP que vous souhaitez utiliser
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Build assets (si nécessaire)
+        run: yarn install && yarn run build
+
+      - name: Deploy to VPS
+        uses: easingthemes/ssh-deploy@v2
+        with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-    - name: Update
-      run: |
-        sudo apt update
-        sudo apt upgrade
-    - name: Install projet on server
-      run: |
-        git clone https://github.com/tbaldewyns/askaway.git
-        chmod -R 777 askaway/
-        cd askaway/
-    - name: Install Composer
-      run: php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    - name: Test Composer installation
-      run: php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-    - name: Run Composer
-      run: php composer-setup.php
-    - name: Delete Composer installation file
-      run: php -r "unlink('composer-setup.php');"
-    - name: Install Depenencies
-      run: php composer.phar require symfony/requirements-checker
-    - name: install Apache pack
-      run: php composer.phar require symfony/apache-pack
-    - name: Optimize autoloader
-      run: php composer.phar install --optimize-autoloader
-    - name: Create .env.local.prod
-      run: php composer.phar symfony:dump-env prod
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
-    - name: Run migrations
-      run: php bin/console d:m:m
+          server-ip: '51.210.111.25'  # Adresse IP de votre serveur VPS OVH
+          server-user: 'git'  # Nom d'utilisateur de votre serveur VPS OVH
+          server-dir: '/var/www/html/prod/askaway'  # Chemin vers le répertoire de déploiement sur votre serveur
 
