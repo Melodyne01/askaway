@@ -25,6 +25,9 @@ jobs:
       with:
         php-version: '8.0'
     - uses: actions/checkout@v3
+    - uses: webfactory/ssh-agent@v0.7.0
+      with:
+          ssh-private-key: ${{ secrets.VPS }}
     - name: Install projet on server
       run: |
         cd /var/www/html/prod/
