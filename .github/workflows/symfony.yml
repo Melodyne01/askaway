@@ -31,8 +31,8 @@ jobs:
     - name: Install projet on server
       run: |
         git clone https://github.com/tbaldewyns/askaway.git
-        chmod -R 777 askaway
-        cd askaway
+        chmod -R 777 askaway/
+        cd askaway/
     - name: Install Composer
       run: php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     - name: Test Composer installation
