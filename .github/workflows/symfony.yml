@@ -25,9 +25,6 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
 
-      - name: Build assets (si nécessaire)
-        run: yarn install && yarn run build
-
       - name: Deploy to VPS
         uses: easingthemes/ssh-deploy@v2
         with:
