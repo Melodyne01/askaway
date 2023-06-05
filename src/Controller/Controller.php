@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\User;
+use Twig\Environment;
 use App\Entity\Article;
 use App\Entity\Visitor;
 use App\Repository\ArticleRepository;
@@ -23,6 +24,27 @@ class Controller extends AbstractController
     {
         $this->manager = $manager;
     }
+
+    #[Route('/sitemap.xml', name: 'sitemap')]
+    public function sitemap(ArticleRepository $articleRepo, Environment $twig): Response
+    {
+        $articles = $articleRepo->findAllOnline();
+        $urls = [];
+
+        foreach ($articles as $article){
+            array_push($urls, "https://askaway.fr/article/" . $article->getId() . "/" . $twig->getFilter('slugify')->getCallable()($article->getTitle()));
+        }
+        // Ajoutez ici d'autres URLs de votre projet Symfony en utilisant une boucle for ou en récupérant les données dynamiquement
+        $response = $this->render('sitemap/sitemap.xml.twig', [
+            'urls' => $urls,
+        ]);
+
+        $response->headers->set('Content-Type', 'text/xml');
+
+        return $response;
+    }
+
+
     #[Route('/', name: 'home')]
     public function index(ArticleRepository $articleRepo): Response
     {
@@ -67,7 +89,8 @@ class Controller extends AbstractController
     {
        if ($this->getUser() == null) {
             $visitor = new Visitor();
-            //$ip = $_SERVER['HTTP_X_FORWARED_FOR'];
+            $request = Request::createFromGlobals();
+            //$ip = $request->getClientIp();
             $ip = "2a02:a03f:600f:a800:ac20:d559:f642:6c17";
             $details = json_decode(file_get_contents("http://ip-api.com/json/{$ip}"));
             $visitor->setIp(substr($ip, -9));
