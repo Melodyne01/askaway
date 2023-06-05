@@ -30,7 +30,6 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: Install projet on server
       run: |
-        cd /var/www/html/prod/
         git clone https://github.com/tbaldewyns/askaway.git
         chmod -R 777 askaway
         cd askaway
