@@ -28,9 +28,9 @@ jobs:
       - name: Deploy to VPS
         uses: easingthemes/ssh-deploy@v2
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          remote-host: ${{ secrets.REMOTE_HOST }}  # Adresse IP de votre serveur VPS OVH
-          remote-user: 'git@github.com'  # Nom d'utilisateur de votre serveur VPS OVH
-          target: '/var/www/html/prod/askaway'  # Chemin vers le répertoire de déploiement sur votre serveur
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}  # Adresse IP de votre serveur VPS OVH
+          REMOTE_USER: 'git@github.com'  # Nom d'utilisateur de votre serveur VPS OVH
+          TARGET: '/var/www/html/prod/askaway'  # Chemin vers le répertoire de déploiement sur votre serveur
 
 
