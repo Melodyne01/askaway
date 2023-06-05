@@ -30,8 +30,8 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: Update
       run: |
-        apt update
-        apt upgrade
+        sudo apt update
+        sudo apt upgrade
     - name: Install projet on server
       run: |
         git clone https://github.com/tbaldewyns/askaway.git
