@@ -47,6 +47,7 @@ class AddSectionType extends AbstractType
                     '15' => '15',
                 ],
             ])
+            ->add('imageSource', TextType::class, array('label' => false, 'required' => false))
         ;
     }
 

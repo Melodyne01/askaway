@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Allow: /
+Allow: /article/
+
+Sitemap: https://askaway.fr/sitemap.xml

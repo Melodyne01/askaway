@@ -19,7 +19,7 @@
         <img src="{{ asset('image/logo.png') }}" alt="logo askaway">
     </div>
     <div class="searchbar">
-        <input type="text" id="searchInput" placeholder="Search..." />
+        <input type="text" id="searchInput" placeholder="Rechercher par titre ou par catégorie" />
     </div>
 </section>
 <section class="articles" id="suggestionsList">
@@ -95,6 +95,12 @@
             img.src = '/upload/' + suggestion.image
             img.alt = suggestion.title +'image';
 
+            var category = document.createElement('div');
+            category.className = 'categorie';
+
+            var categoryP = document.createElement('p');
+            categoryP.textContent = suggestion.name;
+
             var title = document.createElement('div');
             title.className = 'title';
 
@@ -120,6 +126,8 @@
             link.appendChild(card);
             card.appendChild(image);
             image.appendChild(img);
+            card.appendChild(category);
+            category.appendChild(categoryP);
             card.appendChild(title);
             title.appendChild(titleP);
             card.appendChild(createdAt);

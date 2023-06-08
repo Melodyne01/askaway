@@ -7,47 +7,25 @@
 
 {% block stylesheets %}
 <link href="{{ asset('css/admin/stats.css') }}" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 {% endblock %}
 
 {% block body %}
+<section class="boxes">
+    <div class="box">
+        <h4>Aujourd'hui :</h4>
+        <h1>{{dailyVisitors}}</h1>
+    </div>
+    <div class="box">
+        <h4>Ce mois ci :</h4>
+        <h1>{{monthlyVisitors}}</h1>
+    </div>
+    <div class="box">
+        <h4>Cette année :</h4>
+        <h1>{{yearlyVisitors}}</h1>
+    </div>
+</section>
 <section>
-    {% if nbrOfVisitList %}
-    <div class="visistsCharts">
-            <div class="visitsChart">
-            <canvas id="dailyVisitsChart"></canvas>
-        </div>
-        <div class="visitsChart">
-            <canvas id="monthlyVisitsChart"></canvas>
-        </div>
-        <!--
-        <div class="visitsChart">
-            <canvas id="yearlyVisitsChart"></canvas>
-        </div>-->
-    </div>
-    <div class="charts">
-        <div class="listChart">
-        <div class="list">
-            <div class="nbr">
-                {% for nbr in nbrOfVisitList %}
-                    <div class="itemNbr">
-                        {{nbr}}
-                        <hr>
-                    </div>
-                {% endfor %}
-            </div>
-
-            <div class="name">
-                {% for name in pageList %}
-                    <div class="itemName">
-                        {{name}}
-                        <hr>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
     <div class="detailChart">
         {% for visitor in visitors %}
         <div class="line">
@@ -57,113 +35,10 @@
             <div class="option" id="date">{{visitor.visitedAt|date("d-m-y H:i:s")}}</div>
             <div class="option" id="page">{{visitor.page}}</div>
             <hr>
-        </div>            
+        </div>
+        {% else %}
+        Aucune données présente pour le moment            
         {% endfor %}
     </div>
-    </div>
-    {% else %}
-        Aucune données présente pour le moment
-    {% endif %}
 </section>
-{% endblock %}
-
-{% block javascripts %}
-<script>
-    
-    let pieCategories = document.querySelector("#dailyVisitsChart")
-    let pieCategGraph = new Chart(pieCategories, {
-        type: "line",
-        data: {
-            
-            labels: ["1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h","17h", "18h", "19h", "20h", "21h", "22h", "23h"],
-            datasets: [{
-                label: "Aujourd'hui",
-                data:{{dailyVisitors | raw}},
-                backgroundColor: "transparent",
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }]
-        },
-            options: {
-                maintainAspectRatio: true,
-                scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        min: 0                  
-                    }                  
-                    
-                }]
-            }
-                
-        }
-    })
-</script>
-
-<script>
-    
-    let pieCategories2 = document.querySelector("#monthlyVisitsChart")
-    let pieCategGraph2 = new Chart(pieCategories2, {
-        type: "line",
-        data: {
-            
-            labels: ["1", "2"],
-            datasets: [{
-                label: 'Ce mois-ci',
-                data:[1,2],
-                backgroundColor: "transparent",
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }]
-        },
-            options: {
-                maintainAspectRatio: true,
-                scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        min: 0                  
-                    }                  
-                    
-                }]
-            }
-                
-        }
-    })
-</script>
-
-<script>
-    
-    let pieCategories3 = document.querySelector("#yearlyVisitsChart")
-    let pieCategGraph3 = new Chart(pieCategories3, {
-        type: "line",
-        data: {
-            
-            labels: [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
-            datasets: [{
-                label: 'Cette année',
-                data:{{yearlyVisitors | raw}},
-                backgroundColor: "transparent",
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }]
-        },
-            options: {
-                maintainAspectRatio: true,
-                scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        min: 0                  
-                    }                  
-                    
-                }]
-            }
-                
-        }
-    })
-</script>
 {% endblock %}

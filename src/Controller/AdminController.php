@@ -13,6 +13,7 @@ use App\Form\AddSectionType;
 use App\Form\AddCategorieType;
 use App\Form\RegistrationType;
 use App\Twig\SlugifyExtension;
+use App\Service\ChatGptService;
 use App\Repository\ArticleRepository;
 use App\Repository\SectionRepository;
 use App\Repository\VisitorRepository;
@@ -52,7 +53,7 @@ class AdminController extends AbstractController
         ]);
         }
 
-        $articles = $articleRepo->findAllByNameASC();
+        $articles = $articleRepo->findAllByIDDesc();
 
         return $this->render('admin/admin.html.twig', [
             'user' => $this->getUser(),
@@ -180,7 +181,7 @@ class AdminController extends AbstractController
     #[Route('admin/categories', name: 'admin_categories')]
     public function categories(Request $request, ManagerRegistry $manager, CategorieRepository $categorieRepo): Response
     {
-        $categories = $categorieRepo->findAll();
+        $categories = $categorieRepo->findAllOrderByNameASC();
         $categorie = new Categorie();
 
         $form = $this->createForm(AddCategorieType::class, $categorie);
@@ -199,10 +200,22 @@ class AdminController extends AbstractController
         ]);
     }
     #[Route('admin/categorie/{name}', name: 'admin_categorie')]
-    public function categorie(Categorie $categorie, ArticleRepository $articleRepo): Response
+    public function categorie(Categorie $categorie, ArticleRepository $articleRepo, Request $request, ManagerRegistry $manager): Response
     {
+
+        $form = $this->createForm(AddCategorieType::class, $categorie);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $manager->getManager()->persist($categorie);
+            $manager->getManager()->flush();
+            return $this->redirectToRoute('admin_categories');
+        }
+
         $articles = $articleRepo->findAllByCategory($categorie);
         return $this->render('admin/categorie.html.twig', [
+            'form' => $form->createView(),
             'categorie' => $categorie,
             'articles' => $articles,
         ]);
@@ -220,20 +233,17 @@ class AdminController extends AbstractController
         $day = $date->format('d');
         $hour = $date->format('H');
         $visitors = $visitorRepo->findAllByDESC();
-        $i = 01;
-        while ($i < 31){
-            if($i < 24){
-            $dailyVisitors[] = count($visitorRepo->findVisitsByDate($year, $month, $day, strval($i)));
-            }
-            if ($i < 13){
-            $yearlyVisitors[] = count($visitorRepo->findVisitsByDate($year, strval($i), "", ""));
-            }
-            $monthlyVisitors[] = count($visitorRepo->findVisitsByDate($year, $month, strval($i), ""));
-            $i++;
-        }
+        
+        $dailyVisitors = count($visitorRepo->findVisitsByDate($year, $month, $day, ""));
+        $monthlyVisitors = count($visitorRepo->findVisitsByDate($year, $month, "", ""));
+        $yearlyVisitors = count($visitorRepo->findVisitsByDate($year, "", "", ""));
+
         $pageListFromRepo = $visitorRepo->findVisitsByPage();
+        
         foreach ($pageListFromRepo as $page) {
         $PageListToStringList[] = $page['page'];
+
+        
         }
         if($PageListToStringList){
             $nbrOfVisitList = array_count_values($PageListToStringList);
@@ -243,9 +253,9 @@ class AdminController extends AbstractController
             "visitors" => $visitors,
             "nbrOfVisitList" => $nbrOfVisitList,
             "pageList" => $pageList,
-            "yearlyVisitors" => json_encode($yearlyVisitors),
-            "monthlyVisitors" => json_encode($monthlyVisitors),
-            "dailyVisitors" => json_encode($dailyVisitors)
+            "dailyVisitors" => $dailyVisitors,
+            "monthlyVisitors" => $monthlyVisitors,
+            "yearlyVisitors" => $yearlyVisitors,
         ]);
     }
 }

@@ -109,4 +109,13 @@ public function findAllByDESC(): array
                 ->getResult()
             ;
         }
+        public function findVisitsNbrByPage(): array
+        {
+            return $this->createQueryBuilder('v')
+                ->select('v.page as page')
+                ->orderBy('v.page', 'DESC')
+                ->getQuery()
+                ->getResult()
+            ;
+        }
 }

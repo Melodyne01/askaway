@@ -41,6 +41,7 @@ class AddArticleType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ])
+            ->add('imageSource', TextType::class, array('label' => false, 'required' => false))
 
         ;
     }

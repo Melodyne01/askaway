@@ -7,13 +7,21 @@
 
 {% block stylesheets %}
 <link href="{{ asset('css/index.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/form.css') }}" rel="stylesheet" />
 {% endblock %}
 {% block body %}
 
-<section class="articles">
-    <div class="title">
-        {{categorie.name}}
+<section class="form">
+    {{ form_start(form) }}
+    <div class="title">Ajouter une categorie</div>
+    {{ form_row(form.name, {'attr':{'placeholder':'Name'}}) }}
+    
+    <div class="registerBtn">
+        <button type="submit">Ajouter une categorie</button>
     </div>
+    {{ form_end(form) }}
+</section>
+<section class="articles">
     {% for article in articles %}
         <div class="article">
             <a href="{{path('admin_sections', {id: article.id, slug: article.title|slugify})}}">
@@ -38,6 +46,9 @@
                 Il n'y a pas d'article pour cette catégorie
             </div>
     {% endfor %}
+</section>
+<section class="delete">
+    <a href="{{path('deleteCategorie', {id:categorie.id})}}">Supprimer la Categorie</a>
 </section>
 <div class="backBtn">
     <a href="{{path('admin_categories')}}">

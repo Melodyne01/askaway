@@ -6,6 +6,7 @@ use DateTime;
 use App\Entity\User;
 use Twig\Environment;
 use App\Entity\Article;
+use App\Entity\Categorie;
 use App\Entity\Visitor;
 use App\Repository\ArticleRepository;
 use App\Repository\SectionRepository;
@@ -54,23 +55,30 @@ class Controller extends AbstractController
             "articles" => $articles
         ]);
     }
-    #[Route('/articles', name: 'articles')]
-    public function articles(): Response
+    #[Route('/articles/{name}', name: 'categorie')]
+    public function articles(Categorie $categorie, ArticleRepository $articleRepo): Response
     {
-        return $this->render('/articles.html.twig', [
-            
+        $articles = $articleRepo->findAllOnlineByCategory($categorie);
+
+        return $this->render('/categorie.html.twig', [
+            'articles' =>$articles,
+            'categorie' => $categorie
         ]);
     }
     #[Route('/article/{id}/{slug}', name: 'article')]
-    public function article(Article $article, SectionRepository $sectionRepo): Response
+    public function article(Article $article, SectionRepository $sectionRepo, ArticleRepository $articleRepo): Response
     {
         $this->addVisit($article);
+        $lastArticles = $articleRepo->find10LastArticles();
+        $otherArticleByCateorgy = $articleRepo->findAllOnlineByCategory($article->getCategorie());
 
         $sectionByArticle = $sectionRepo->findAllByArticle($article);
         $metaDesc = substr($sectionRepo->findOneByArticle($article)[0]["body"], 0, 150);
 
         return $this->render('/article.html.twig', [
             'article' =>$article,
+            'lastArticles' =>$lastArticles,
+            'otherArticleByCateorgy' =>$otherArticleByCateorgy,
             'sections' => $sectionByArticle,
             'metaDesc' => $metaDesc
         ]);
@@ -90,8 +98,8 @@ class Controller extends AbstractController
        if ($this->getUser() == null) {
             $visitor = new Visitor();
             $request = Request::createFromGlobals();
-            //$ip = $request->getClientIp();
-            $ip = "2a02:a03f:600f:a800:ac20:d559:f642:6c17";
+            $ip = $request->getClientIp();
+            //$ip = "2a02:a03f:600f:a800:ac20:d559:f642:6c17";
             $details = json_decode(file_get_contents("http://ip-api.com/json/{$ip}"));
             $visitor->setIp(substr($ip, -9));
             $visitor->setPage($page);
