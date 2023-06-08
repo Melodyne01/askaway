@@ -34,6 +34,9 @@ class Article
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageSource = null;
+
     public function __construct()
     {
         $this->section = new ArrayCollection();
@@ -134,6 +137,18 @@ class Article
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getImageSource(): ?string
+    {
+        return $this->imageSource;
+    }
+
+    public function setImageSource(?string $imageSource): self
+    {
+        $this->imageSource = $imageSource;
 
         return $this;
     }

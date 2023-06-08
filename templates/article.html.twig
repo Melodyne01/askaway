@@ -8,11 +8,12 @@
 {% endblock %}
 
 {% block stylesheets %}
+<link href="{{ asset('css/index.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/article.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/hideHeader.css') }}" rel="stylesheet" />
 {% endblock %}
 {% block body %}
-<section class="article">
+<section class="articleDetail">
     <div class="image">
         <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
         <div class="overlay">
@@ -21,32 +22,118 @@
             </div>
         </div>
     </div>
-    <div class="sections">
-        <div class="date">
-            Publié le : <time datetime="{{article.createdAt|date('Y-m-d H:i')}}">{{article.createdAt|date('Y-m-d H:i')}}</time>
-        </div>
-        {% for section in sections %}
-            <div class="section">
-                {% if section.title %}
-                <div class="title">
-                    <h2>{{section.title}}</h2>
-                </div>
-                {% endif %}
-                {% if section.image %}
-                <div class="image">
-                    <img src="{{ asset('/upload/'~ section.image)}}" alt="{{section.title}} image">
-                </div>
-                {% endif %}
-                <div class="body">
-                    {{section.body}}
-                </div>
-                {% if section.link and section.linkName %}
-                <div class="link">
-                    <a href="{{section.link}}">{{section.linkName}}</a>
+    <br>
+    {% if article.imageSource %}
+    <div class="imageSource">
+        {{article.imageSource}}
+    </div>
+    {% endif %}
+    
+</section>
+<section class="sections">
+    <div class="date">
+        Publié le : <time datetime="{{article.createdAt|date('Y-m-d H:i')}}">{{article.createdAt|date('Y-m-d H:i')}}</time>
+    </div>
+    {% for section in sections %}
+        <div class="section">
+            {% if section.title %}
+            <div class="title">
+                <h2>{{section.title}}</h2>
+            </div>
+            {% endif %}
+            {% if section.image %}
+            <div class="image">
+                <img src="{{ asset('/upload/'~ section.image)}}" alt="{{section.title}} image">
+                {% if section.imageSource %}
+                <div class="imageSource">
+                    {{section.imageSource}}
                 </div>
                 {% endif %}
             </div>
+            {% endif %}
+            
+            <div class="body">
+                {{section.body}}
+            </div>
+            {% if section.link and section.linkName %}
+            <a target="_blank" href="{{section.link}}">
+                <div class="link">
+                    {{section.linkName}}
+                </div>
+            </a>
+            {% endif %}
+        </div>
+    {% endfor %}
+</section>
+<section class="otherArticles" id="otherArticles">
+    <h2>Dans la même categorie : {{article.categorie.name}}</h2>
+    <div class="articles">
+        {% for article in otherArticleByCateorgy %}
+            <div class="article">
+                <a aria-label="linkToArticle" href="{{path('article', {id: article.id, slug: article.title|slugify})}}">
+                    <div class="card">
+                        <div class="image">
+                            <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
+                        </div>
+                        <div class="categorie">
+                            <p>{{article.categorie}}</p>
+                        </div>
+                        <div class="title">
+                            <p>{{article.title}}</p>
+                        </div>
+                        <div class="date">
+                            <p>{{article.createdAt|date("Y-m-d")}}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
         {% endfor %}
+        <div class="article">
+            <a aria-label="linkToArticle" href="{{path('categorie', {name: article.categorie})}}">
+                <div class="card" id="more">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                      </svg>
+                      <p>Voir plus</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+<section class="otherArticles" id="otherArticles">
+    <h2>Les derniers articles</h2>
+    <div class="articles">
+        {% for article in lastArticles %}
+            <div class="article">
+                <a aria-label="linkToArticle" href="{{path('article', {id: article.id, slug: article.title|slugify})}}">
+                    <div class="card">
+                        <div class="image">
+                            <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
+                        </div>
+                        <div class="categorie">
+                            <p>{{article.categorie}}</p>
+                        </div>
+                        <div class="title">
+                            <p>{{article.title}}</p>
+                        </div>
+                        <div class="date">
+                            <p>{{article.createdAt|date("Y-m-d")}}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+        <div class="article">
+            <a aria-label="linkToArticle" href="{{path('home')}}">
+                <div class="card" id="more">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                      </svg>
+                      <p>Voir plus</p>
+                </div>
+            </a>
+        </div>
+    </div>
     </div>
 </section>
 <div class="backBtn">
@@ -58,4 +145,31 @@
         </svg>
     </a>
 </div>
+{% endblock %}
+
+{% block js %}
+<script>
+    var lazyContent = document.getElementById('otherArticles');
+    var options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5
+    };
+
+    var observer = new IntersectionObserver(function(entries, observer) {
+    entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+        // Charger le contenu de manière asynchrone ici
+        // Par exemple, en utilisant une requête AJAX pour récupérer les données
+        // ou en modifiant le contenu de la div à l'aide de JavaScript
+        lazyContent.style.display = 'block';
+
+        // Arrêter d'observer une fois que le contenu est chargé
+        observer.unobserve(entry.target);
+        }
+    });
+    }, options);
+
+    observer.observe(lazyContent);
+</script>
 {% endblock %}

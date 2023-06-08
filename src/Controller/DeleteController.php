@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Categorie;
 use App\Entity\Section;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,4 +69,15 @@ class DeleteController extends AbstractController
 
         ]);
     }
+
+    #[Route('/admin/deleteCategorie/{id}', name: 'deleteCategorie')]
+    public function deleteCategorie(Categorie $categorie, EntityManagerInterface  $em)
+    {
+        $em->remove($categorie);
+        $em->flush();
+ 
+        $this->addFlash("danger", "La categorie à bien été supprimée");
+        return $this->redirectToRoute('admin_categories');
+    }
+
 }

@@ -73,12 +73,31 @@ class ArticleRepository extends ServiceEntityRepository
                 ->getResult()
             ;
         }
+    public function findAllByIDDesc(): array
+        {
+            return $this->createQueryBuilder('a')
+                ->orderBy('a.id', 'DESC')
+                ->getQuery()
+                ->getResult()
+            ;
+        }
     public function findAllOnline(): array
         {
             return $this->createQueryBuilder('a')
                 ->andWhere('a.online = :val')
                 ->setParameter('val', 1)
                 ->orderBy('a.id', 'DESC')
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+    public function find10LastArticles(): array
+        {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.online = :val')
+                ->setParameter('val', 1)
+                ->orderBy('a.id', 'DESC')
+                ->setMaxResults(10)
                 ->getQuery()
                 ->getResult()
             ;
@@ -94,14 +113,28 @@ class ArticleRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function findAllOnlineByCategory(Categorie $categeory): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.categorie = :cateogrie')
+            ->setParameter('cateogrie', $categeory)
+            ->andWhere('a.online = :online')
+            ->setParameter('online', 1)
+            ->orderBy('a.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     public function findSuggestionsByKeyword(string $keyword): array
     {
         return $this->createQueryBuilder('a')
-            ->select('a.id','a.title', 'a.image', 'a.createdAt')
-            ->where('a.title LIKE :keyword')
+            ->leftJoin('a.categorie', 'b')
+            ->select('a.id','a.title', 'a.image', 'a.createdAt', 'b.name')
+            ->where('a.title LIKE :keyword OR b.name LIKE :keyword')
             ->setParameter('keyword', '%' . $keyword . '%')
             ->andWhere('a.online = :val')
             ->setParameter('val', 1)
+            ->orderBy('a.id', 'DESC')
             ->getQuery()
             ->getResult();
         ;

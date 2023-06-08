@@ -5,7 +5,7 @@
 .image img{
     width: 100vh;
 }
-.overlay{
+.articleDetail .overlay{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -14,42 +14,76 @@
     background-color: rgba(0, 0, 0, 0.6);
     padding: 30px;
 }
-.overlay .title h1{
+.articleDetail .overlay .title h1{
     text-align: center;
     color: white;
     font-size: 45px;
     font-weight: bold;
 }
-.date{
+.articleDetail .date{
     margin: 15px 10px;
+}
+.otherArticles{
+    display: none;
+}
+.otherArticles h2{
+    padding: 10px;
+}
+.articles{
+    width: 100%;
+    display: inline-flex;
+    overflow-x: scroll;
+}
+.imageSource{
+    color: var(--white);
+    font-size: 10px;
+    text-align: center;
 }
 .sections{
     width: 60%;
     margin: 0 auto;
+    padding-top: 50px;
 }
 .section{
     text-align: justify;
 }
 .section .title h2{
     font-size: 40px;
-    padding: 50px 10px;
+    padding: 50px 0px;
     font-weight: bold;
 }
 .section .body{
     font-size: 24px;
-    padding: 10px;
+    padding: 10px 0px;
+}
+
+.section .link{
+    background-color: var(--primary-lighter);
+    text-align: center;
+    padding: 20px 0px;
+    border-radius: 10px;
+}
+@media screen and (max-width:1950px) {
+    .image img{
+        width: 100%;
+    }
+}
+@media screen and (max-width:1580px) {
+    .image img{
+        width: 100%;
+    }
 }
 @media screen and (max-width:1150px) {
     .image img{
         width: 100%;
     }
-    .overlay{
+    .articleDetail .overlay{
         width: 80%;
     }
-    .overlay .title {
+    .articleDetail .overlay .title h1{
         font-size: 28px;
     }
-    .section .title{
+    .section .title h2{
         font-size: 22px;
     }
     .section .body{
@@ -57,17 +91,17 @@
     }
 }
 @media screen and (max-width:767px) {
-    .image img{
+    .articleDetail .image img{
         width: 100%;
     }
-    .overlay{
+    .articleDetail .overlay{
         width: 80%;
         padding: 30px;
     }
-    .overlay .title {
+    .articleDetail .overlay .title h1{
         font-size: 26px;
     }
-    .section .title{
+    .section .title h2{
         font-size: 20px;
         padding: 20px 5px;
     }
@@ -80,20 +114,20 @@
     }
 }
 @media screen and (max-width:550px) {
-    .image img{
+    .articleDetail .image img{
         width: 100%;
     }
-    .overlay{
+    .articleDetail .overlay{
         width: 60%;
         padding: 15px;
     }
-    .overlay .title {
+    .articleDetail .overlay .title h1{
         font-size: 18px;
     }
     .sections{
         width: 90%;
     }
-    .section .title{
+    .section .title h2{
         font-size: 18px;
         padding: 20px 5px;
     }

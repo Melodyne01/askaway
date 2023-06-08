@@ -14,21 +14,25 @@
     {{ form_start(form) }}
     <div class="title">Modifier {{section.title}}</div>
     <div class="lines">
-        <div class="line1" id="longInput">
+        <div class="line" id="longInput">
             {{ form_row(form.title, {'attr':{'placeholder':'Titre'}}) }}
         </div>
         <br>
-        <div class="line2">
-            {{ form_row(form.linkName, {'attr':{'placeholder':'Nom du lien'}}) }}
-            {{ form_row(form.link, {'attr':{'placeholder':'Lien'}}) }}
+        <div class="line" id="longInput">
+            {{ form_row(form.imageSource, {'attr':{'placeholder':'Crédits de l\'image'}}) }}
         </div>
         <br>
-        <div class="line3">
+        <div class="line">
             {{ form_row(form.image) }}
             {{ form_row(form.position) }}
         </div>
         <br>
-        <div class="line4" id="body">
+        <div class="line">
+            {{ form_row(form.linkName, {'attr':{'placeholder':'Nom du lien'}}) }}
+            {{ form_row(form.link, {'attr':{'placeholder':'Lien'}}) }}
+        </div>
+        <br>
+        <div class="line" id="body">
             {{ form_row(form.body, {'attr':{'placeholder':'Body'}}) }}
         </div>
     </div>

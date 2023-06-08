@@ -27,11 +27,6 @@
 }
 .articles{
     text-align: center;
-    margin: 30px;
-}
-.articles .title{
-    padding: 10px;
-    font-size: 24px;
 }
 .article{
     text-align: center;
@@ -40,35 +35,48 @@
 }
 .card{
     width: 350px;
-    margin: 15px;
+    min-height: 280px;
+    margin: 5px;
     border-radius: 10px;
     border: 2px solid var(--primary-lighter);
     position: relative;
+    padding: 10px;
 }
 .card .categorie {
     text-align: left;
-    padding: 0px 20px;
+    padding: 10px 0px;
     font-size: 16px;
 }
 .card .categorie p{
-    color: var(--primary-lighter);
+    color: var(--white);
 }
 .card .title p{
     text-align: justify;
-    padding: 0px 0px 0px 10px;
     font-weight: bold;
     font-size: 20px;
+    padding-bottom: 10px;
 }
 .card .date p{
     position: absolute;
     bottom: 2%;
     right: 2%;
     font-size: 10px;
-    color: var(--primary-lighter);
+    color: var(--white);
 }
 .card img{
     width: 100%;
     border-radius: 10px 10px 0px 0px;
+}
+#more{
+    background-color: var(--primary-lighter);
+}
+#more p{
+    padding: 20px 0px;
+}
+#more svg{
+    fill: var(--white);
+    height: 80px;
+    padding-top: 25%;
 }
 .card:hover{
     opacity: 80%;
@@ -79,10 +87,8 @@
     }
     .card{
         width: 300px;
-        margin: 10px;
     }
     .card .title p{
-        padding: 10px;
         font-size: 16px;
     }
     .card .date p{

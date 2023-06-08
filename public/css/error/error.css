@@ -1,0 +1,15 @@
+section{
+    text-align: center;
+}
+.title{
+    font-size: 100px;
+    font-weight: bold;
+    padding: 50px;
+}
+.subTitle{
+    font-size: 30px;
+    padding: 20px;
+}
+.toHome{
+    padding: 10px;
+}

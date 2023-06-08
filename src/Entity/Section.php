@@ -43,6 +43,9 @@ class Section
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $linkName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageSource = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -156,6 +159,18 @@ class Section
     public function setLinkName(?string $linkName): self
     {
         $this->linkName = $linkName;
+
+        return $this;
+    }
+
+    public function getImageSource(): ?string
+    {
+        return $this->imageSource;
+    }
+
+    public function setImageSource(?string $imageSource): self
+    {
+        $this->imageSource = $imageSource;
 
         return $this;
     }

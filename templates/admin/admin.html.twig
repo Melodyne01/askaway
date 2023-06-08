@@ -14,14 +14,18 @@
 <section class="form">
     {{ form_start(form) }}
     <div class="title">Ajouter un article</div>
-    <div class="line1">
+    <div class="line" id="longInput">
         {{ form_row(form.title, {'attr':{'placeholder':'Title'}}) }}
-        {{ form_row(form.categorie) }}
     </div>
     <br>
-    <div class="line2">
+    <div class="line">
         {{ form_row(form.image) }}
+        {{ form_row(form.imageSource, {'attr':{'placeholder':'Crédits de l\'image'}}) }}
+    </div>
+    <br>
+    <div class="line">
         {{ form_row(form.online) }}
+        {{ form_row(form.categorie) }}
     </div>
     <div class="btn">
         <button type="submit">Ajouter l'article</button>
@@ -37,7 +41,6 @@
                 {% else %}
                 <div class="card" id="offline">
                 {% endif %}
-                
                     <div class="image">
                         <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
                     </div>
