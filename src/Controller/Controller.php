@@ -36,7 +36,7 @@ class Controller extends AbstractController
             array_push($urls, "https://askaway.fr/article/" . $article->getId() . "/" . $twig->getFilter('slugify')->getCallable()($article->getTitle()));
         }
         // Ajoutez ici d'autres URLs de votre projet Symfony en utilisant une boucle for ou en récupérant les données dynamiquement
-        $response = $this->render('sitemap/sitemap.xml.twig', [
+        $response = $this->render('sitemap.xml.twig', [
             'urls' => $urls,
         ]);
 
