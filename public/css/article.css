@@ -2,7 +2,7 @@
     position: relative;
     text-align: center;
 }
-.image img{
+.articleDetail .image img, .section img{
     width: 100vh;
 }
 .articleDetail .overlay{
@@ -22,9 +22,6 @@
 }
 .articleDetail .date{
     margin: 15px 10px;
-}
-.otherArticles{
-    display: none;
 }
 .otherArticles h2{
     padding: 10px;
@@ -69,12 +66,24 @@
     }
 }
 @media screen and (max-width:1580px) {
+    .articleDetail .image{
+        width: 100%;
+    }
+    .articleDetail .image img{
+        width: 70%;
+    }
     .image img{
         width: 100%;
     }
 }
 @media screen and (max-width:1150px) {
-    .image img{
+    .articleDetail .image{
+        width: 100%;
+    }
+    .articleDetail .image img{
+        width: 90%;
+    }
+    .sections .image img{
         width: 100%;
     }
     .articleDetail .overlay{

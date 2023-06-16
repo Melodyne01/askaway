@@ -47,12 +47,17 @@ class Controller extends AbstractController
 
 
     #[Route('/', name: 'home')]
-    public function index(ArticleRepository $articleRepo): Response
+    public function index(Request $request, ArticleRepository $articleRepo): Response
     {
-        $articles = $articleRepo->findAllOnline();
+        $page = $request->query->getInt('page', 1);
+        $limit = 15;
+        
+        $articles = $articleRepo->findPaginatedArticles($page, $limit);
         
         return $this->render('/index.html.twig', [
-            "articles" => $articles
+            "articles" => $articles,
+            'currentPage' => $page,
+            'totalPages' => ceil(count($articleRepo->findAll()) / $limit),
         ]);
     }
     #[Route('/articles/{name}', name: 'categorie')]
@@ -93,13 +98,25 @@ class Controller extends AbstractController
 
         return new JsonResponse($suggestions);
     }
+    
+    #[Route('/search/loadMore', name: 'loadMore')]
+    public function loadMore(Request $request, ArticleRepository $articleRepo)
+    {
+        $page = $request->query->getInt('page');
+        $limit = 15; // Nombre d'éléments par page
+
+        $items = $articleRepo->findPaginatedArticles($page, $limit);
+
+        return new JsonResponse($items);
+    }
+
     public function addVisit(string $page)
     {
        if ($this->getUser() == null) {
             $visitor = new Visitor();
             $request = Request::createFromGlobals();
-            $ip = $request->getClientIp();
-            //$ip = "2a02:a03f:600f:a800:ac20:d559:f642:6c17";
+            //$ip = $request->getClientIp();
+            $ip = "2a02:a03f:600f:a800:ac20:d559:f642:6c17";
             $details = json_decode(file_get_contents("http://ip-api.com/json/{$ip}"));
             $visitor->setIp(substr($ip, -9));
             $visitor->setPage($page);

@@ -31,7 +31,7 @@
                         <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
                     </div>
                     <div class="categorie">
-                        <p>{{article.categorie}}</p>
+                        <p>{{article.name}}</p>
                     </div>
                     <div class="title">
                         <p>{{article.title}}</p>
@@ -43,6 +43,12 @@
             </a>
         </div>
     {% endfor %}
+
+    {% if currentPage < totalPages %}
+       <div class="loadMore" id="load-more-div">
+        <button class="loadMoreBtn" id="load-more-button" data-page="{{ currentPage + 1 }}">Load More</button>
+       </div>
+    {% endif %}
 </section>
 {% endblock %}
 {% block js %}
@@ -55,7 +61,7 @@
         var keyword = searchInput.value;
 
         // Make an AJAX request to the search suggestions endpoint
-        axios.get('/search/suggestions', {
+        axios.get('{{ path('search_suggestions') }}', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -143,4 +149,98 @@
     });
     });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var loadMoreButton = document.getElementById('load-more-button');
+    if (loadMoreButton) {
+        loadMoreButton.addEventListener('click', loadMoreItems.bind(null, loadMoreButton));
+    }
+});
+
+function loadMoreItems(loadMoreButton) {
+    var nextPage = loadMoreButton.getAttribute('data-page');
+    console.log(nextPage);
+
+    axios.get('{{ path('loadMore') }}', {
+        params: {
+            page: nextPage
+        }
+    })
+    .then(function(response) {
+        var suggestionsList = document.getElementById('suggestionsList');
+        response.data.forEach(function(item) {
+            var article = document.createElement('div');
+            article.className = 'article';
+
+            slug = item.title.toLowerCase()
+            .replace(/[^a-z0-9 -]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .trim();
+            var link = document.createElement('a');
+            link.href= '/article/' + item.id + '/' + slug;
+            // Créer les div enfants
+            var card = document.createElement('div');
+            card.className = 'card';
+
+            var image = document.createElement('div');
+            image.className = 'image';
+            
+            var img = document.createElement('img');
+            img.src = '/upload/' + item.image
+            img.alt = item.title +'image';
+
+            var category = document.createElement('div');
+            category.className = 'categorie';
+
+            var categoryP = document.createElement('p');
+            categoryP.textContent = item.name;
+
+            var title = document.createElement('div');
+            title.className = 'title';
+
+            var titleP = document.createElement('p');
+            titleP.textContent = item.title;
+
+            var date = new Date(item.createdAt.date);
+
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
+            var day = date.getDate().toString().padStart(2, '0');
+
+            var formattedDate = year + '-' + month + '-' + day;
+
+            var createdAt = document.createElement('div');
+            createdAt.className = 'date';
+
+            var createdAtP = document.createElement('p');
+            createdAtP.textContent = formattedDate;
+            // Ajouter les div enfants au div parent
+            suggestionsList.appendChild(article);
+            article.appendChild(link);
+            link.appendChild(card);
+            card.appendChild(image);
+            image.appendChild(img);
+            card.appendChild(category);
+            category.appendChild(categoryP);
+            card.appendChild(title);
+            title.appendChild(titleP);
+            card.appendChild(createdAt);
+            createdAt.appendChild(createdAtP);
+        });
+        // Ajouter le div parent au document
+        var nextPage = parseInt(loadMoreButton.getAttribute('data-page')) + 1;
+        loadMoreButton.setAttribute('data-page', nextPage);
+
+        if (nextPage >= {{ totalPages }}) {
+            var loadMoreDiv = document.getElementById('load-more-div');
+            loadMoreDiv.style.display = 'none';
+        }
+        })
+        .catch(function(error) {
+        console.error(error);
+        });
+    };
+</script>
+
 {% endblock %}
