@@ -103,3 +103,17 @@ footer{
 #offline{
     background-color: var(--offline)
 }
+.loadMore{
+    background-color: var(--primary-lighter);
+    padding: 30px;
+}
+.loadMoreBtn{
+    background-color: var(--primary);
+    color: var(--white);
+    width: 80%;
+    border: none;
+    padding: 30px;
+}
+.loadMoreBtn:hover{
+    opacity: 80%;
+}

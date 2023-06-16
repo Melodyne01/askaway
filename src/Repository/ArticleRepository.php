@@ -139,4 +139,18 @@ class ArticleRepository extends ServiceEntityRepository
             ->getResult();
         ;
     }
+    public function findPaginatedArticles($page, $limit)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->leftJoin('a.categorie', 'b')
+            ->select('a.id','a.title', 'a.image', 'a.createdAt', 'b.name')
+            ->andWhere('a.online = :val')
+            ->setParameter('val', 1)
+            ->setFirstResult(($page - 1) * $limit)
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }
