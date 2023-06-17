@@ -53,11 +53,11 @@ class Controller extends AbstractController
         $limit = 15;
         
         $articles = $articleRepo->findPaginatedArticles($page, $limit);
-        
         return $this->render('/index.html.twig', [
             "articles" => $articles,
             'currentPage' => $page,
-            'totalPages' => ceil(count($articleRepo->findAll()) / $limit),
+            'totalPages' => ceil(count($articleRepo->findAllOnline()) / $limit) + 1,
+            'limit' => $limit
         ]);
     }
     #[Route('/articles/{name}', name: 'categorie')]

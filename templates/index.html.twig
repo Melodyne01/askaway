@@ -14,6 +14,9 @@
 
     {% endblock %}
 {% block body %}
+<div id="loader-overlay">
+    <div class="loader"></div>
+  </div>
 <section class="logoCard">
     <div class="logo">
         <img src="{{ asset('image/logo.png') }}" alt="logo askaway">
@@ -43,10 +46,11 @@
             </a>
         </div>
     {% endfor %}
-
-    {% if currentPage < totalPages %}
+</section>
+<section class="loadMoreSection">
+    {% if currentPage < totalPages + limit %}
        <div class="loadMore" id="load-more-div">
-        <button class="loadMoreBtn" id="load-more-button" data-page="{{ currentPage + 1 }}">Load More</button>
+        <button class="loadMoreBtn" id="load-more-button" data-page="{{ currentPage + 1 }}">Charger les articles précédents</button>
        </div>
     {% endif %}
 </section>
@@ -142,6 +146,8 @@
         });
         // Ajouter le div parent au document
         suggestionsList.appendChild(articles);
+        var loadMoreDiv = document.getElementById('load-more-div');
+            loadMoreDiv.style.display = 'none';
         })
         .catch(function(error) {
         console.error(error);
@@ -152,14 +158,17 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var loadMoreButton = document.getElementById('load-more-button');
+
     if (loadMoreButton) {
         loadMoreButton.addEventListener('click', loadMoreItems.bind(null, loadMoreButton));
     }
 });
-
 function loadMoreItems(loadMoreButton) {
     var nextPage = loadMoreButton.getAttribute('data-page');
-    console.log(nextPage);
+    var loaderOverlay = document.getElementById("loader-overlay");
+
+    loaderOverlay.style.display = "block"; // Hide the loader overlay
+
 
     axios.get('{{ path('loadMore') }}', {
         params: {
@@ -231,8 +240,9 @@ function loadMoreItems(loadMoreButton) {
         // Ajouter le div parent au document
         var nextPage = parseInt(loadMoreButton.getAttribute('data-page')) + 1;
         loadMoreButton.setAttribute('data-page', nextPage);
+        loaderOverlay.style.display = "none"; // Hide the loader overlay
 
-        if (nextPage >= {{ totalPages }}) {
+        if (nextPage >= {{ totalPages}}) {
             var loadMoreDiv = document.getElementById('load-more-div');
             loadMoreDiv.style.display = 'none';
         }
@@ -242,5 +252,4 @@ function loadMoreItems(loadMoreButton) {
         });
     };
 </script>
-
 {% endblock %}
