@@ -115,8 +115,8 @@ class Controller extends AbstractController
        if ($this->getUser() == null) {
             $visitor = new Visitor();
             $request = Request::createFromGlobals();
-            //$ip = $request->getClientIp();
-            $ip = "2a02:a03f:600f:a800:ac20:d559:f642:6c17";
+            $ip = $request->getClientIp();
+            //$ip = "2a02:a03f:600f:a800:ac20:d559:f642:6c17";
             $details = json_decode(file_get_contents("http://ip-api.com/json/{$ip}"));
             $visitor->setIp(substr($ip, -9));
             $visitor->setPage($page);
