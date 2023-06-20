@@ -32,7 +32,7 @@
 </section>
 <section class="sections">
     <div class="date">
-        Publié le : <time datetime="{{article.createdAt|date('Y-m-d H:i')}}">{{article.createdAt|date('Y-m-d H:i')}}</time>
+        Publié le : <time datetime="{{article.createdAt|date('Y-m-d H:i')}}">{{article.createdAt|date('Y-m-d')}}</time>
     </div>
     {% for section in sections %}
         <div class="section">
@@ -53,7 +53,7 @@
             {% endif %}
             
             <div class="body">
-                {{section.body}}
+                <p>{{section.body}}</p>
             </div>
             {% if section.link and section.linkName %}
             <a target="_blank" href="{{section.link}}">

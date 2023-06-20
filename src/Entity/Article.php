@@ -19,7 +19,7 @@ class Article
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?Categorie $categorie = null;
 
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Section::class)]
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Section::class, cascade:["remove"])]
     private Collection $section;
 
     #[ORM\Column(length: 255)]

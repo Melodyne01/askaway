@@ -16,7 +16,9 @@ class DeleteController extends AbstractController
     #[Route('/admin/deleteArticle/{id}', name: 'deleteArticle')]
     public function deleteArticle(Article $article, EntityManagerInterface $em)
     {
-        unlink($this->getParameter('images_directory').'/'. $article->getImage());
+        if($article->getImage()){
+            unlink($this->getParameter('images_directory').'/'. $article->getImage());
+        }
         $em->remove($article);
         $em->flush();
         $this->addFlash("danger", "Le produit à bien été supprimé");
@@ -43,6 +45,9 @@ class DeleteController extends AbstractController
     public function deleteSection(Section $section, EntityManagerInterface  $em, Environment $twig)
     {
         $article = $section->getArticle();
+        if($section->getImage()){
+            unlink($this->getParameter('images_directory').'/'. $section->getImage());
+        }
         $em->remove($section);
         $em->flush();
  

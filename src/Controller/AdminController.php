@@ -10,7 +10,9 @@ use App\Entity\Section;
 use App\Entity\Categorie;
 use App\Form\AddArticleType;
 use App\Form\AddSectionType;
+use Intervention\Image\Image;
 use App\Form\AddCategorieType;
+use App\Form\EditArticleType;
 use App\Form\RegistrationType;
 use App\Twig\SlugifyExtension;
 use App\Service\ChatGptService;
@@ -38,13 +40,16 @@ class AdminController extends AbstractController
         //Vérification de la conformité des données entrées par l'utilisateur
         if ($form->isSubmitted() && $form->isValid()) {
             $image = $form->get('image')->getData();
-            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+            if($image){
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
                 $image->move(
                     $this->getParameter('images_directory'),
                     $fichier
                 );
-            $article->setOnline(false);
+                
             $article->setImage($fichier);
+            }
+            $article->setOnline(false);
             $article->setCreatedAt(new DateTime('Europe/Paris'));
             $manager->getManager()->persist($article);
             $manager->getManager()->flush();
@@ -93,7 +98,7 @@ class AdminController extends AbstractController
     #[Route('admin/article/{id}/{slug}', name: 'admin_sections')]
     public function sections(Article $article, Request $request, ManagerRegistry $manager, SectionRepository $sectionRepo, Environment $twig): Response
     {
-        $articleForm = $this->createForm(AddArticleType::class, $article);
+        $articleForm = $this->createForm(EditArticleType::class, $article);
         $articleForm->handleRequest($request);
         //Vérification de la conformité des données entrées par l'utilisateur
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {

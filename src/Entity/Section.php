@@ -22,7 +22,7 @@ class Section
     #[ORM\Column(length: 1000)]
     private ?string $body = null;
 
-    #[ORM\Column(length: 500, nullable: true)]
+    #[ORM\Column(length: 1000, nullable: true)]
     private ?string $link = null;
 
     #[ORM\ManyToOne(inversedBy: 'section')]

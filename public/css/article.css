@@ -20,9 +20,7 @@
     font-size: 45px;
     font-weight: bold;
 }
-.articleDetail .date{
-    margin: 15px 10px;
-}
+
 .otherArticles h2{
     padding: 10px;
 }
@@ -39,7 +37,12 @@
 .sections{
     width: 60%;
     margin: 0 auto;
-    padding-top: 50px;
+    padding-top: 30px;
+    padding-bottom: 80px;
+}
+.sections .date{
+    margin: 5px;
+    font-size: 12px;
 }
 .section{
     text-align: justify;
@@ -125,7 +128,7 @@
         font-size: 18px;
     }
     .sections{
-        width: 90%;
+        width: 95%;
     }
     .section .title h2{
         font-size: 18px;
