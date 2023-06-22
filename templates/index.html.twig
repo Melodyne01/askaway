@@ -40,7 +40,7 @@
                         <p>{{article.title}}</p>
                     </div>
                     <div class="date">
-                        <p>{{article.createdAt|date("Y-m-d")}}</p>
+                        <p>{{article.updatedAt|date("Y-m-d")}}</p>
                     </div>
                 </div>
             </a>
@@ -117,7 +117,7 @@
             var titleP = document.createElement('p');
             titleP.textContent = suggestion.title;
 
-            var date = new Date(suggestion.createdAt.date);
+            var date = new Date(suggestion.updatedAt.date);
 
             var year = date.getFullYear();
             var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
@@ -211,7 +211,7 @@ function loadMoreItems(loadMoreButton) {
             var titleP = document.createElement('p');
             titleP.textContent = item.title;
 
-            var date = new Date(item.createdAt.date);
+            var date = new Date(item.updatedAt.date);
 
             var year = date.getFullYear();
             var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1

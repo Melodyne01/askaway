@@ -41,7 +41,6 @@
     padding-bottom: 80px;
 }
 .sections .date{
-    margin: 5px;
     font-size: 12px;
 }
 .section{
@@ -110,6 +109,9 @@
     }
     .sections{
         width: 80%;
+    }
+    .sections .date{
+        margin: 5px;
     }
     .section .body{
         font-size: 12px;

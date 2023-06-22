@@ -32,7 +32,7 @@
 </section>
 <section class="sections">
     <div class="date">
-        Publié le : <time datetime="{{article.createdAt|date('Y-m-d H:i')}}">{{article.createdAt|date('Y-m-d')}}</time>
+        Dernière mise à jour le : <time datetime="{{article.updatedAt|date('Y-m-d')}}">{{article.updatedAt|date('Y-m-d')}}</time>
     </div>
     {% for section in sections %}
         <div class="section">

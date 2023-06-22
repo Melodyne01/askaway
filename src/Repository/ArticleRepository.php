@@ -129,7 +129,7 @@ class ArticleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->leftJoin('a.categorie', 'b')
-            ->select('a.id','a.title', 'a.image', 'a.createdAt', 'b.name')
+            ->select('a.id','a.title', 'a.image', 'a.updatedAt', 'b.name')
             ->where('a.title LIKE :keyword OR b.name LIKE :keyword')
             ->setParameter('keyword', '%' . $keyword . '%')
             ->andWhere('a.online = :val')
@@ -143,7 +143,7 @@ class ArticleRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('a')
             ->leftJoin('a.categorie', 'b')
-            ->select('a.id','a.title', 'a.image', 'a.createdAt', 'b.name')
+            ->select('a.id','a.title', 'a.image', 'a.updatedAt', 'b.name')
             ->andWhere('a.online = :val')
             ->setParameter('val', 1)
             ->setFirstResult(($page - 1) * $limit)

@@ -51,6 +51,7 @@ class AdminController extends AbstractController
             }
             $article->setOnline(false);
             $article->setCreatedAt(new DateTime('Europe/Paris'));
+            $article->setUpdatedAt(new DateTime('Europe/Paris'));
             $manager->getManager()->persist($article);
             $manager->getManager()->flush();
             return $this->redirectToRoute('admin',[
@@ -111,6 +112,7 @@ class AdminController extends AbstractController
                     );
                 $article->setImage($fichier);
             }
+            $article->setUpdatedAt(new DateTime('Europe/Paris'));
             $manager->getManager()->persist($article);
             $manager->getManager()->flush();
             return $this->redirectToRoute('admin'); 
