@@ -6,8 +6,8 @@ use DateTime;
 use App\Entity\User;
 use Twig\Environment;
 use App\Entity\Article;
-use App\Entity\Categorie;
 use App\Entity\Visitor;
+use App\Entity\Categorie;
 use App\Repository\ArticleRepository;
 use App\Repository\SectionRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 
 class Controller extends AbstractController
 {
@@ -73,6 +74,9 @@ class Controller extends AbstractController
     #[Route('/article/{id}/{slug}', name: 'article')]
     public function article(Article $article, SectionRepository $sectionRepo, ArticleRepository $articleRepo): Response
     {
+        if(!$article->isOnline()){
+            return $this->createAccessDeniedException();
+        }
         $this->addVisit($article);
         $lastArticles = $articleRepo->find10LastArticles();
         $otherArticleByCateorgy = $articleRepo->findAllOnlineByCategory($article->getCategorie());
