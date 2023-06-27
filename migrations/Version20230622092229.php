@@ -20,7 +20,7 @@ final class Version20230622092229 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE article ADD updated_at DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE article ADD updated_at DATETIME DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
