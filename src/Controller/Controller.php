@@ -45,11 +45,11 @@ class Controller extends AbstractController
 
         return $response;
     }
-    #[Route('/e3dbdf94-5a92-40c3-9641-15872b5eb864.html', name: 'sitemap')]
+    #[Route('/22735fbd-b59f-4664-9f86-7b1d44da830b.html', name: 'sitemap')]
     public function netlinkdeal(): Response
     {
         
-        return $this->render('netlinkdeal.html.twig');
+        return $this->render('22735fbd-b59f-4664-9f86-7b1d44da830b.html');
     }
     
 
