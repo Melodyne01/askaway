@@ -15,7 +15,7 @@
 {% block body %}
 <section class="articleDetail">
     <div class="image">
-        <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
+        <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}}">
         <div class="overlay">
             <div class="title">
                 <h1>{{article.title}}</h1>
@@ -30,12 +30,12 @@
     {% endif %}
     
 </section>
-<section class="sections">
+<article class="sections">
     <div class="date">
         Dernière mise à jour le : <time datetime="{{article.updatedAt|date('Y-m-d')}}">{{article.updatedAt|date('Y-m-d')}}</time>
     </div>
     {% for section in sections %}
-        <div class="section">
+        <section class="section">
             {% if section.title %}
             <div class="title">
                 <h2>{{section.title}}</h2>
@@ -43,7 +43,7 @@
             {% endif %}
             {% if section.image %}
             <div class="image">
-                <img src="{{ asset('/upload/'~ section.image)}}" alt="{{section.title}} image">
+                <img src="{{ asset('/upload/'~ section.image)}}" alt="{{section.title}}">
                 {% if section.imageSource %}
                 <div class="imageSource">
                     {{section.imageSource}}
@@ -62,9 +62,9 @@
                 </div>
             </a>
             {% endif %}
-        </div>
+        </section>
     {% endfor %}
-</section>
+</article>
 <section class="otherArticles" id="otherArticles">
     <h2>Dans la même categorie : {{article.categorie.name}}</h2>
     <div class="articles">

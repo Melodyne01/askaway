@@ -45,6 +45,23 @@ class Controller extends AbstractController
 
         return $response;
     }
+    #[Route('/e3dbdf94-5a92-40c3-9641-15872b5eb864.html', name: 'sitemap')]
+    public function netlinkdeal(ArticleRepository $articleRepo, Environment $twig): Response
+    {
+        $articles = $articleRepo->findAllOnline();
+        $urls = [];
+
+        foreach ($articles as $article){
+            array_push($urls, "https://askaway.fr/article/" . $article->getId() . "/" . $twig->getFilter('slugify')->getCallable()($article->getTitle()));
+        }
+        // Ajoutez ici d'autres URLs de votre projet Symfony en utilisant une boucle for ou en récupérant les données dynamiquement
+        $response = $this->render('netlinkdeal.html.twig');
+
+        $response->headers->set('Content-Type', 'text/xml');
+
+        return $response;
+    }
+    
 
 
     #[Route('/', name: 'home')]

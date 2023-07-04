@@ -104,12 +104,11 @@ footer{
     background-color: var(--offline)
 }
 .loadMore{
-    background-color: var(--primary-lighter);
     padding: 30px;
     text-align: center;
 }
 .loadMoreBtn{
-    background-color: var(--primary);
+    background-color: var(--primary-lighter);
     color: var(--white);
     width: 80%;
     border: none;

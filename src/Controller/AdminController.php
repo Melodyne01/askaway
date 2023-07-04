@@ -49,7 +49,7 @@ class AdminController extends AbstractController
                 
             $article->setImage($fichier);
             }
-            $article->setOnline(true);
+            $article->setOnline(false);
             $article->setCreatedAt(new DateTime('Europe/Paris'));
             $article->setUpdatedAt(new DateTime('Europe/Paris'));
             $manager->getManager()->persist($article);
