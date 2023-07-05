@@ -1,5 +1,4 @@
 .categories{
-    background-color: var(--primary-lighter);
     text-align: center;
     padding: 20px;
 }
@@ -7,22 +6,23 @@
     color: white;
     text-decoration: none;
 }
-.categorie{
+.categories .categorie{
     padding: 50px;
-    background-color: var(--primary);
+    background-color: var(--primary-lighter);
+    color: var(--white);
     margin: 10px;
     width: 20%;
     display: inline-block;
+    border-radius: 30px;
 }
-.categories a:hover{
+.categorie:hover{
     opacity: 80%;
 }
 
 @media screen and (max-width:620px) {
-    .categorie{
+    .categories .categorie{
         width: 70%;
         margin: 5px 0px;
-
     }
     
 }

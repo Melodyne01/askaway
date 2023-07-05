@@ -12,12 +12,13 @@
 {% block body %}
 <section class="articles">
     {% for article in articles %}
-        <div class="article">
-            <a href="{{path('article', {id: article.id, slug: article.title|slugify})}}">
-                <div class="card">
-                    <div class="image">
-                        <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
-                    </div>
+    <div class="article">
+        <a aria-label="linkToArticle" href="{{path('article', {id: article.id, slug: article.title|slugify})}}">
+            <div class="card">
+                <div class="image">
+                    <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
+                </div>
+                <div class="infos">
                     <div class="categorie">
                         <p>{{article.categorie}}</p>
                     </div>
@@ -25,11 +26,12 @@
                         <p>{{article.title}}</p>
                     </div>
                     <div class="date">
-                        <p>{{article.createdAt|date("Y-m-d")}}</p>
+                        <p>{{article.updatedAt|date("Y-m-d")}}</p>
                     </div>
                 </div>
-            </a>
-        </div>
+            </div>
+        </a>
+    </div>
         {% else %}
             <div class="notFound">
                 Il n'y a pas d'article pour cette catégorie

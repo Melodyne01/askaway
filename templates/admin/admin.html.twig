@@ -44,14 +44,16 @@
                     <div class="image">
                         <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
                     </div>
-                    <div class="categorie">
-                        <p>{{article.categorie}}</p>
-                    </div>
-                    <div class="title">
-                        <p>{{article.title}}</p>
-                    </div>
-                    <div class="date">
-                        <p>{{article.createdAt|date("Y-m-d")}}</p>
+                    <div class="infos">
+                        <div class="categorie">
+                            <p>{{article.categorie}}</p>
+                        </div>
+                        <div class="title">
+                            <p>{{article.title}}</p>
+                        </div>
+                        <div class="date">
+                            <p>{{article.updatedAt|date("Y-m-d")}}</p>
+                        </div>
                     </div>
                 </div>
             </a>

@@ -16,11 +16,6 @@
 <section class="articleDetail">
     <div class="image">
         <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}}">
-        <div class="overlay">
-            <div class="title">
-                <h1>{{article.title}}</h1>
-            </div>
-        </div>
     </div>
     <br>
     {% if article.imageSource %}
@@ -28,9 +23,11 @@
         {{article.imageSource}}
     </div>
     {% endif %}
-    
 </section>
 <article class="sections">
+    <div class="title">
+        <h1>{{article.title}}</h1>
+    </div>
     <div class="date">
         Dernière mise à jour le : <time datetime="{{article.updatedAt|date('Y-m-d')}}">{{article.updatedAt|date('Y-m-d')}}</time>
     </div>
@@ -75,14 +72,16 @@
                         <div class="image">
                             <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
                         </div>
-                        <div class="categorie">
-                            <p>{{article.categorie}}</p>
-                        </div>
-                        <div class="title">
-                            <p>{{article.title}}</p>
-                        </div>
-                        <div class="date">
-                            <p>{{article.createdAt|date("Y-m-d")}}</p>
+                        <div class="infos">
+                            <div class="categorie">
+                                <p>{{article.categorie}}</p>
+                            </div>
+                            <div class="title">
+                                <p>{{article.title}}</p>
+                            </div>
+                            <div class="date">
+                                <p>{{article.updatedAt|date("Y-m-d")}}</p>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -110,14 +109,16 @@
                         <div class="image">
                             <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
                         </div>
-                        <div class="categorie">
-                            <p>{{article.categorie}}</p>
-                        </div>
-                        <div class="title">
-                            <p>{{article.title}}</p>
-                        </div>
-                        <div class="date">
-                            <p>{{article.createdAt|date("Y-m-d")}}</p>
+                        <div class="infos">
+                            <div class="categorie">
+                                <p>{{article.categorie}}</p>
+                            </div>
+                            <div class="title">
+                                <p>{{article.title}}</p>
+                            </div>
+                            <div class="date">
+                                <p>{{article.updatedAt|date("Y-m-d")}}</p>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -163,7 +164,6 @@
         // Par exemple, en utilisant une requête AJAX pour récupérer les données
         // ou en modifiant le contenu de la div à l'aide de JavaScript
         lazyContent.style.display = 'block';
-
         // Arrêter d'observer une fois que le contenu est chargé
         observer.unobserve(entry.target);
         }

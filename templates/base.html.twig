@@ -16,7 +16,7 @@
         {% block javascripts %}
         {% endblock %}
     </head>
-    <header>
+    <div class="adminHeader">
         <div class="navbar">
             <div class="links">
                 <a href="{{path('home')}}" class="link"><svg class="bi bi-house-door-fill" viewBox="0 0 16 16">
@@ -52,7 +52,7 @@
             </div>
             {% endif %}
         </div>
-    </header>
+    </div>
     <body>
         <main>
             {% block body %}{% endblock %}
@@ -88,7 +88,4 @@
         }
         </script>
     </body>
-    <footer>
-        <a href="{{path('login')}}" class="link">Espace administrateur</a> 
-    </footer>
 </html>

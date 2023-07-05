@@ -13,7 +13,7 @@ input, select, button, option, textarea{
     padding: 10px;
     width: 250px;
     margin: 15px;
-    color: white;
+    color: var(--primary-lighter);
     background-color: var(--primary);
     border: none;
 }

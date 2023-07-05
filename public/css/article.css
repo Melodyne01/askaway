@@ -3,24 +3,10 @@
     text-align: center;
 }
 .articleDetail .image img, .section img{
-    width: 100vh;
+    width: 60%;
+    margin-top: 20px;
+    border-radius: 30px;
 }
-.articleDetail .overlay{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 30px;
-}
-.articleDetail .overlay .title h1{
-    text-align: center;
-    color: white;
-    font-size: 45px;
-    font-weight: bold;
-}
-
 .otherArticles h2{
     padding: 10px;
 }
@@ -37,11 +23,17 @@
 .sections{
     width: 60%;
     margin: 0 auto;
-    padding-top: 30px;
+    padding-top: 10px;
     padding-bottom: 80px;
 }
+.sections .title{
+    font-size: 34px;
+    font-weight: bold;
+    text-align: justify;
+}
 .sections .date{
-    font-size: 12px;
+    font-size: 14px;
+    padding: 10px 0px;
 }
 .section{
     text-align: justify;
@@ -52,38 +44,36 @@
     font-weight: bold;
 }
 .section .body{
-    font-size: 24px;
-    padding: 10px 0px;
+    font-size: 26px;
+    padding: 15px 0px;
 }
 
 .section .link{
-    background-color: var(--primary-lighter);
+    background-color: var(--black);
     text-align: center;
     padding: 20px 0px;
-    border-radius: 10px;
+    border-radius: 30px;
+    color: var(--white);
 }
 @media screen and (max-width:1950px) {
-    .image img{
+    .articleDetail .image img, .section img{
+        width: 70%;
+    }
+    .sections .image img{
         width: 100%;
     }
 }
 @media screen and (max-width:1580px) {
-    .image img{
-        width: 100%;
-    }
-    .articleDetail .image img{
-	width: 70%;
+    .sections .image img{
+        width: 70%;
     }
 }
 @media screen and (max-width:1150px) {
-    .image img{
-        width: 100%;
+    .articleDetail .image img, .section img{
+        width: 99%;
     }
-    .articleDetail .overlay{
-        width: 80%;
-    }
-    .articleDetail .overlay .title h1{
-        font-size: 28px;
+    .sections .title{
+        font-size: 26px;
     }
     .section .title h2{
         font-size: 22px;
@@ -93,15 +83,8 @@
     }
 }
 @media screen and (max-width:767px) {
-    .articleDetail .image img{
-        width: 100%;
-    }
-    .articleDetail .overlay{
-        width: 80%;
-        padding: 30px;
-    }
-    .articleDetail .overlay .title h1{
-        font-size: 26px;
+    .sections .title{
+        font-size: 20px;
     }
     .section .title h2{
         font-size: 20px;
@@ -117,27 +100,23 @@
         font-size: 12px;
         padding: 5px;
     }
+    .section .link{
+        font-size: 12px;
+    }
 }
 @media screen and (max-width:550px) {
-    .articleDetail .image img{
-        width: 100%;
-    }
-    .articleDetail .overlay{
-        width: 60%;
-        padding: 15px;
-    }
-    .articleDetail .overlay .title h1{
-        font-size: 18px;
+    .sections .title{
+        font-size: 16px;
     }
     .sections{
         width: 95%;
     }
     .section .title h2{
-        font-size: 18px;
+        font-size: 14px;
         padding: 20px 5px;
     }
     .section .body{
-        font-size: 14px;
+        font-size: 13px;
         padding: 5px;
     }
 }

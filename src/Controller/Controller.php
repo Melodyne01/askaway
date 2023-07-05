@@ -9,6 +9,7 @@ use App\Entity\Article;
 use App\Entity\Visitor;
 use App\Entity\Categorie;
 use App\Repository\ArticleRepository;
+use App\Repository\CategorieRepository;
 use App\Repository\SectionRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,24 +46,26 @@ class Controller extends AbstractController
 
         return $response;
     }
-    #[Route('/22735fbd-b59f-4664-9f86-7b1d44da830b.html', name: 'sitemap')]
+    #[Route('/22735fbd-b59f-4664-9f86-7b1d44da830b.html', name: 'netlink')]
     public function netlinkdeal(): Response
     {
-        
         return $this->render('22735fbd-b59f-4664-9f86-7b1d44da830b.html');
     }
-    
-
 
     #[Route('/', name: 'home')]
-    public function index(Request $request, ArticleRepository $articleRepo): Response
+    public function index(Request $request, ArticleRepository $articleRepo, CategorieRepository $categorieRepo): Response
     {
         $page = $request->query->getInt('page', 1);
-        $limit = 15;
+        $limit = 10;
         
         $articles = $articleRepo->findPaginatedArticles($page, $limit);
+        $categories = $categorieRepo->findAllOrderByNameASC();
+        $lastArticle = $articles[0];
+        unset($articles[0]);
         return $this->render('/index.html.twig', [
             "articles" => $articles,
+            "lastArticle" => $lastArticle,
+            "categories" => $categories,
             'currentPage' => $page,
             'totalPages' => ceil(count($articleRepo->findAllOnline()) / $limit) + 1,
             'limit' => $limit
