@@ -124,7 +124,7 @@ class Controller extends AbstractController
         return new JsonResponse($items);
     }
 
-    public function addVisit(string $page)
+    public function addVisit(Article $page)
     {
        if ($this->getUser() == null) {
             $visitor = new Visitor();

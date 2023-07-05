@@ -29,8 +29,8 @@ class Visitor
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $visitedAt = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $page = null;
+    #[ORM\ManyToOne(inversedBy: 'visitors')]
+    private ?Article $page = null;
 
     public function getId(): ?int
     {
@@ -97,12 +97,12 @@ class Visitor
         return $this;
     }
 
-    public function getPage(): ?string
+    public function getPage(): ?Article
     {
         return $this->page;
     }
 
-    public function setPage(string $page): self
+    public function setPage(?Article $page): self
     {
         $this->page = $page;
 

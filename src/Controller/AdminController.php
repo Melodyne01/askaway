@@ -245,17 +245,6 @@ class AdminController extends AbstractController
         $monthlyVisitors = count($visitorRepo->findVisitsByDate($year, $month, "", ""));
         $yearlyVisitors = count($visitorRepo->findVisitsByDate($year, "", "", ""));
 
-        $pageListFromRepo = $visitorRepo->findVisitsByPage();
-        
-        foreach ($pageListFromRepo as $page) {
-        $PageListToStringList[] = $page['page'];
-
-        
-        }
-        if($PageListToStringList){
-            $nbrOfVisitList = array_count_values($PageListToStringList);
-            $pageList = array_keys($nbrOfVisitList);
-        }
         return $this->render('admin/adminStats.html.twig', [
             "visitors" => $visitors,
             "nbrOfVisitList" => $nbrOfVisitList,
