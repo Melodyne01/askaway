@@ -56,7 +56,7 @@ class Controller extends AbstractController
     public function index(Request $request, ArticleRepository $articleRepo, CategorieRepository $categorieRepo): Response
     {
         $page = $request->query->getInt('page', 1);
-        $limit = 10;
+        $limit = 15;
         
         $articles = $articleRepo->findPaginatedArticles($page, $limit);
         $categories = $categorieRepo->findAllOrderByNameASC();
