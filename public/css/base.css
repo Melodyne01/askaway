@@ -15,9 +15,33 @@
     color: var(--black);
     
 }
-body::-webkit-scrollbar {
-    display: none;
+body{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 10px;
+    height: 5px;
   }
+/* Track */
+*::-webkit-scrollbar-track {
+    border-radius: 10px;
+    padding: 10px;
+
+  }
+
+  /* Handle */
+ *::-webkit-scrollbar-thumb {
+    background: var(--primary-lighter);
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-lighter);
+}
+
 a{
     text-decoration: none;
 }

@@ -126,11 +126,16 @@
             var article = document.createElement('div');
             article.className = 'article';
 
-            slug = suggestion.title.toLowerCase()
-            .replace(/[^a-z0-9 -]/g, '')
+            slug = item.title.toLowerCase()
+            .toString()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim()
             .replace(/\s+/g, '-')
-            .replace(/-+/g, '-')
-            .trim();
+            .replace(/[^\w-]+/g, '')
+            .replace(/--+/g, '-')
+            
             var link = document.createElement('a');
             link.href= '/article/' + suggestion.id + '/' + slug;
             // Créer les div enfants
@@ -225,10 +230,15 @@ function loadMoreItems(loadMoreButton) {
             article.className = 'article';
 
             slug = item.title.toLowerCase()
-            .replace(/[^a-z0-9 -]/g, '')
+            .toString()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim()
             .replace(/\s+/g, '-')
-            .replace(/-+/g, '-')
-            .trim();
+            .replace(/[^\w-]+/g, '')
+            .replace(/--+/g, '-')
+
             var link = document.createElement('a');
             link.href= '/article/' + item.id + '/' + slug;
             // Créer les div enfants
