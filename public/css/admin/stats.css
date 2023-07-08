@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'Barlow';
+    src: url('/font/BarlowCondensed-ExtraBold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 .boxes{
     background-color: var(--primary-lighter);
     text-align: center;
@@ -15,10 +21,14 @@ p{
     color: var(--white);
 
 }
+.title{
+    text-align: center;
+}
 .title h2{
     padding: 20px 0px;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: bold;
+    font-family: 'Barlow';
 }
 .box h1{
     padding: 15px;
@@ -28,7 +38,6 @@ p{
 }
 .charts{
     text-align: center;
-    
 }
 #chart1{
     background-color: var(--white);
@@ -36,10 +45,9 @@ p{
     width: 55%;
 }
 #chart2{
-width: 40%;
+    width: 40%;
 }
 .chart{
-    min-height: 500px;
     margin: 0px 10px;
     display: inline-block;
     vertical-align: top;
@@ -50,7 +58,6 @@ width: 40%;
     border-radius: 30px;
     margin: 0px;
     margin-bottom: 10px;
-
 }
 .card{
     width: 100%;
@@ -74,8 +81,9 @@ width: 40%;
 
 .country{
     background-color: var(--primary-lighter);
-    width: 100%;
     border-radius: 30px;
+    text-align: center;
+    margin: 5px 5px;
 }
 .country img{
     width: 100px;
@@ -95,6 +103,7 @@ width: 40%;
     background-color: var(--white);
     margin-top: 20px;
     text-align: center;
+    margin-bottom: 50px;
 }
 .detailChart{
     text-align: center;
@@ -102,9 +111,6 @@ width: 40%;
     overflow: scroll;
     width: 100%;
 }
-*::-webkit-scrollbar {
-    display: none;
-  }
 .option{
     display: inline-block;
     width: 20%;

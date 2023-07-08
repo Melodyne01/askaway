@@ -1,7 +1,11 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
+<link href="{{ asset('css/admin/stats.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/admin/statsArticles.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/index.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/form.css') }}" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 {% endblock %}
 
 {% block head %}
@@ -10,5 +14,155 @@
 {% endblock %}
 
 {% block body %}
-Articles
+<header class="logoCard">
+    <div class="searchbar">
+        <input type="text" id="searchInput" placeholder="Rechercher par titre ou par catégorie" />
+    </div>
+</header>
+<section class="articles" id="suggestionsList">
+    {% for article in articles %}
+        <div class="article">
+            <a aria-label="linkToArticle" href="{{path('admin_stats_article', {id: article.id, slug: article.title|slugify})}}">
+                <div class="card">
+                    <div class="image">
+                        <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
+                    </div>
+                    <div class="infos">
+                        <div class="categorie">
+                            <p>{{article.name}}</p>
+                        </div>
+                        <div class="title">
+                            <p>{{article.title}}</p>
+                        </div>
+                        <div class="date">
+                            <p>{{article.updatedAt|date("Y-m-d")}}</p>
+                        </div>
+                        <div class="nbr">
+                            <p>{{article.number}} vues</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+</section>
+<div class="backBtn">
+    <a href="{{path('admin_stats')}}">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left-circle-fill"
+            viewBox="0 0 16 16">
+            <path
+                d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+        </svg>
+    </a>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var searchInput = document.getElementById('searchInput');
+    var suggestionsList = document.getElementById('suggestionsList');
+
+    searchInput.addEventListener('input', function() {
+        var keyword = searchInput.value;
+
+        // Make an AJAX request to the search suggestions endpoint
+        axios.get('{{ path('search_suggestions') }}', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        params: {
+            keyword: keyword
+        }
+        })
+        .then(function(response) {
+        var suggestions = response.data;
+        // Clear previous suggestions
+        suggestionsList.innerHTML = '';
+
+        var articles = document.createElement('div');
+            articles.className = 'articles';
+        // Append new suggestions to the suggestions list
+        suggestions.forEach(function(suggestion) {
+            // Créer les div enfants
+            var article = document.createElement('div');
+            article.className = 'article';
+
+            slug = suggestion.title.toLowerCase()
+            .toString()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/!/g, '')
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, '-')
+            .replace(/[^\w-]+/g, '-')
+            .replace(/--+/g, '-')
+            
+            var link = document.createElement('a');
+            link.href= '/article/' + suggestion.id + '/' + slug;
+            // Créer les div enfants
+            var card = document.createElement('div');
+            card.className = 'card';
+
+            var image = document.createElement('div');
+            image.className = 'image';
+
+            var img = document.createElement('img');
+            img.src = '/upload/' + suggestion.image
+            img.alt = suggestion.title +'image';
+
+            var infos = document.createElement('div');
+            infos.className = 'infos';
+
+            var category = document.createElement('div');
+            category.className = 'categorie';
+
+            var categoryP = document.createElement('p');
+            categoryP.textContent = suggestion.name;
+
+            var title = document.createElement('div');
+            title.className = 'title';
+
+            var titleP = document.createElement('p');
+            titleP.textContent = suggestion.title;
+
+            var date = new Date(suggestion.updatedAt.date);
+
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
+            var day = date.getDate().toString().padStart(2, '0');
+
+            var formattedDate = year + '-' + month + '-' + day;
+
+            var createdAt = document.createElement('div');
+            createdAt.className = 'date';
+
+            var createdAtP = document.createElement('p');
+            createdAtP.textContent = formattedDate;
+            // Ajouter les div enfants au div parent
+            articles.appendChild(article);
+            article.appendChild(link);
+            link.appendChild(card);
+            card.appendChild(image);
+            image.appendChild(img);
+            card.appendChild(infos);
+            infos.appendChild(category);
+            category.appendChild(categoryP);
+            infos.appendChild(title);
+            title.appendChild(titleP);
+            infos.appendChild(createdAt);
+            createdAt.appendChild(createdAtP);
+
+        });
+        // Ajouter le div parent au document
+        suggestionsList.appendChild(articles);
+        var loadMoreDiv = document.getElementById('load-more-div');
+            loadMoreDiv.style.display = 'none';
+        })
+        .catch(function(error) {
+        console.error(error);
+        });
+    });
+    });
+</script>
 {% endblock %}

@@ -1,0 +1,11 @@
+#chart1{
+    background-color: var(--white);
+    border-radius: 30px;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+}
+.graph{
+    width: 70%;
+    display: inline-block;
+}

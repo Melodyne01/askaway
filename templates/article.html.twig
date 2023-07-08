@@ -99,44 +99,6 @@
         </div>
     </div>
 </section>
-<section class="otherArticles" id="otherArticles">
-    <h2>Les derniers articles</h2>
-    <div class="articles">
-        {% for article in lastArticles %}
-            <div class="article">
-                <a aria-label="linkToArticle" href="{{path('article', {id: article.id, slug: article.title|slugify})}}">
-                    <div class="card">
-                        <div class="image">
-                            <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
-                        </div>
-                        <div class="infos">
-                            <div class="categorie">
-                                <p>{{article.categorie}}</p>
-                            </div>
-                            <div class="title">
-                                <p>{{article.title}}</p>
-                            </div>
-                            <div class="date">
-                                <p>{{article.updatedAt|date("Y-m-d")}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
-        <div class="article">
-            <a aria-label="linkToArticle" href="{{path('home')}}">
-                <div class="card" id="more">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
-                      </svg>
-                      <p>Voir plus</p>
-                </div>
-            </a>
-        </div>
-    </div>
-    </div>
-</section>
 <div class="backBtn">
     <a href="{{path('home')}}" aria-label="Page home">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left-circle-fill"

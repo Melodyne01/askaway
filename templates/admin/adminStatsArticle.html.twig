@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
 <link href="{{ asset('css/admin/stats.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/admin/statsArticles.css') }}" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 {% endblock %}
 
 {% block head %}
@@ -9,25 +12,135 @@
 {% endblock %}
 
 {% block body %}
-<section class="lastVisits">
-    <a href="#">
-        <div class="title">
-            <h2>Les dernières visites</h2>
-        </div>
-        <div class="detailChart">
-            {% for visit in visits %}
-            <div class="line">
-                <div class="option" id="ip">{{visit.ip}}</div>
-                <div class="option" id="region">{{visit.city}}</div>
-                <div class="option" id="country">{{visit.country}}</div>
-                <div class="option" id="date">{{visit.visitedAt|date("d-m-y H:i:s")}}</div>
-                <div class="option" id="page">{{visit.page}}</div>
-                <hr>
-            </div>
-            {% else %}
-            Aucune données présente pour le moment            
-            {% endfor %}
-        </div>
-    </a>
+<section class="boxes">
+    <div class="box">
+        <h4>Aujourd'hui :</h4>
+        <h1>{{dailyVisitors}}</h1>
+    </div>
+    <div class="box">
+        <h4>Ce mois ci :</h4>
+        <h1>{{monthlyVisitors}}</h1>
+    </div>
+    <div class="box">
+        <h4>Cette année :</h4>
+        <h1>{{yearlyVisitors}}</h1>
+    </div>
 </section>
+<div class="charts">
+    <div class="chart" id="chart1">
+        <a href="#">
+            <div class="graph">
+                <canvas id="myChart"></canvas>
+            </div>
+            <div class="graph">
+                <canvas id="myChart2"></canvas>
+            </div>
+            <div class="graph">
+                <canvas id="myChart3"></canvas>
+            </div>
+        </a>
+    </div>
+    <section class="lastVisits">
+        <a href="#">
+            <div class="title">
+                <h2>Les dernières visites</h2>
+            </div>
+            <div class="detailChart">
+                {% for visit in visits %}
+                <div class="line">
+                    <div class="option" id="ip">{{visit.ip}}</div>
+                    <div class="option" id="region">{{visit.city}}</div>
+                    <div class="option" id="country">{{visit.country}}</div>
+                    <div class="option" id="date">{{visit.visitedAt|date("d-m-y H:i:s")}}</div>
+                    <div class="option" id="page">{{visit.page}}</div>
+                    <hr>
+                </div>
+                {% else %}
+                Aucune données présente pour le moment            
+                {% endfor %}
+            </div>
+        </a>
+    </section>
+    <div class="backBtn">
+        <a href="{{path('admin_stats')}}">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left-circle-fill"
+                viewBox="0 0 16 16">
+                <path
+                    d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+            </svg>
+        </a>
+    </div>
+</div>
 {% endblock %}
+
+{% block js %}
+<script>
+    const ctx = document.getElementById('myChart');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h","17h", "18h", "19h", "20h", "21h", "22h", "23h"],
+      datasets: [{
+        label: 'Aujourd\'hui',
+        data: {{dailyVisitorsGraph | raw}},
+        borderColor: 'rgb(0, 0, 0)',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+<script>
+  const ctx2 = document.getElementById('myChart2');
+
+  new Chart(ctx2, {
+    type: 'line',
+    data: {
+        labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16","17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"],
+      datasets: [{
+        label: 'Ce mois ci',
+        data: {{monthlyVisitorsGraph | raw}},
+        borderColor: 'rgb(0, 0, 0)',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+<script>
+  const ctx3 = document.getElementById('myChart3');
+
+  new Chart(ctx3, {
+    type: 'line',
+    data: {
+        labels: [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
+
+      datasets: [{
+        label: 'Cette année',
+        data: {{yearlyVisitorsGraph | raw}},
+        borderColor: 'rgb(0, 0, 0)',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+ {% endblock %}

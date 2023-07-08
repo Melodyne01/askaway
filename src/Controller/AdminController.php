@@ -68,6 +68,7 @@ class AdminController extends AbstractController
             'articles' => $articles
         ]);
     }
+
     #[Route('admin/profile/{id}', name: 'admin_profile')]
     public function adminProfile(User $user, Request $request, ManagerRegistry $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
@@ -154,6 +155,7 @@ class AdminController extends AbstractController
             'article' => $article
         ]);
     }
+
     #[Route('admin/section/{id}', name: 'admin_section')]
     public function section(Section $section, Request $request, ManagerRegistry $manager, Environment $twig): Response
     {
@@ -186,6 +188,7 @@ class AdminController extends AbstractController
             'article' => $section->getArticle()
         ]);
     }
+
     #[Route('admin/categories', name: 'admin_categories')]
     public function categories(Request $request, ManagerRegistry $manager, CategorieRepository $categorieRepo): Response
     {
@@ -207,6 +210,7 @@ class AdminController extends AbstractController
             'categories' => $categories
         ]);
     }
+
     #[Route('admin/categorie/{name}', name: 'admin_categorie')]
     public function categorie(Categorie $categorie, ArticleRepository $articleRepo, Request $request, ManagerRegistry $manager): Response
     {
@@ -228,6 +232,7 @@ class AdminController extends AbstractController
             'articles' => $articles,
         ]);
     }
+
     #[Route('/admin/stats', name: 'admin_stats')]
     public function stats(VisitorRepository $visitorRepo): Response
     {
@@ -235,7 +240,8 @@ class AdminController extends AbstractController
         $year = $date->format('Y');
         $month = $date->format('m');
         $day = $date->format('d');
-        $visitorLimit = 10;
+
+        $visitorLimit = 20;
         $visitors = $visitorRepo->findAllByDESC($visitorLimit);
 
         $limit = 1;
@@ -272,24 +278,59 @@ class AdminController extends AbstractController
             "yearlyVisitorsGraph" => json_encode($yearlyVisitorsGraph)
         ]);
     }
+
     #[Route('/admin/stats/articles', name: 'admin_stats_articles')]
-    public function stat_articles(VisitorRepository $visitorRepo): Response
+    public function stat_articles(VisitorRepository $visitorRepo, Request $request,): Response
     {
-        $visits = $visitorRepo->findAllOccurrencesByArticle();
+        $page = $request->query->getInt('page', 1);
+        $limit = 15;
+
+        $articles = $visitorRepo->findAllOccurrencesByArticle();
 
         return $this->render('admin/adminStatsArticles.html.twig', [
-            "visits" => $visits
+            "articles" => $articles,
+            'totalPages' => ceil(count($articles) / $limit) + 1,
+            'limit' => $limit
         ]);
     }
+
     #[Route('/admin/stats/article/{id}/{slug}', name: 'admin_stats_article')]
     public function stat_article(Article $article, VisitorRepository $visitorRepo): Response
     {
+        $date = new DateTime();
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');
+
         $visits = $visitorRepo->findVisitsByPage($article->getId());
 
+        $dailyVisitors = count($visitorRepo->findVisitsByDateWithParam($year, $month, $day, "",'page',$article->getId()));
+        $monthlyVisitors = count($visitorRepo->findVisitsByDateWithParam($year, $month, "", "", 'page',$article->getId()));
+        $yearlyVisitors = count($visitorRepo->findVisitsByDateWithParam($year, "", "", "",'page',$article->getId()));
+
+        $i = 1;
+        while ($i < 31){
+            if($i < 24){
+            $dailyVisitorsGraph[] = count($visitorRepo->findVisitsByDateWithParam($year, $month, $day, strval($i),'page',$article->getId()));
+            }
+            if ($i < 13){
+            $yearlyVisitorsGraph[] = count($visitorRepo->findVisitsByDateWithParam($year, strval($i), "", "",'page',$article->getId()));
+            }
+            $monthlyVisitorsGraph[] = count($visitorRepo->findVisitsByDateWithParam($year, $month, strval($i), "", 'page',$article->getId()));
+            $i++;
+        }
+
         return $this->render('admin/adminStatsArticle.html.twig', [
-            "visits" => $visits
+            "visits" => $visits,
+            "dailyVisitors" => $dailyVisitors,
+            "monthlyVisitors" => $monthlyVisitors,
+            "yearlyVisitors" => $yearlyVisitors,
+            "dailyVisitorsGraph" => json_encode($dailyVisitorsGraph),
+            "monthlyVisitorsGraph" => json_encode($monthlyVisitorsGraph),
+            "yearlyVisitorsGraph" => json_encode($yearlyVisitorsGraph)
         ]);
     }
+
     #[Route('/admin/stats/categories', name: 'admin_stats_categories')]
     public function stat_categories(VisitorRepository $visitorRepo): Response
     {
@@ -299,6 +340,7 @@ class AdminController extends AbstractController
             "visits" => $visits
         ]);
     }
+
     #[Route('/admin/stats/category', name: 'admin_stats_category')]
     public function stat_category(VisitorRepository $visitorRepo): Response
     {
@@ -308,22 +350,58 @@ class AdminController extends AbstractController
             "visits" => $visits
         ]);
     }
+
     #[Route('/admin/stats/countries', name: 'admin_stats_countries')]
     public function stat_countries(VisitorRepository $visitorRepo): Response
     {
-        $visits = $visitorRepo->findOccurrencesByVisitorParam("country");
-
+        $countries = $visitorRepo->findOccurrencesByVisitorParam('country');
+        foreach($countries as $country){
+            $countryGraph[] = $country["country"];
+            $numberGraph[] = $country["number"];
+        }
+        
         return $this->render('admin/adminStatsCountries.html.twig', [
-            "visits" => $visits
+            "countries" => $countries,
+            "country" => json_encode($countryGraph),
+            "number" => json_encode($numberGraph),
         ]);
     }
+
     #[Route('/admin/stats/country/{country}', name: 'admin_stats_country')]
     public function stat_country(string $country, VisitorRepository $visitorRepo): Response
     {
+
+        $date = new DateTime();
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');
+
+        $dailyVisitors = count($visitorRepo->findVisitsByDateWithParam($year, $month, $day, "",'country',$country));
+        $monthlyVisitors = count($visitorRepo->findVisitsByDateWithParam($year, $month, "", "", 'country',$country));
+        $yearlyVisitors = count($visitorRepo->findVisitsByDateWithParam($year, "", "", "",'country',$country));
+
+        $i = 1;
+        while ($i < 31){
+            if($i < 24){
+            $dailyVisitorsGraph[] = count($visitorRepo->findVisitsByDateWithParam($year, $month, $day, strval($i),'country',$country));
+            }
+            if ($i < 13){
+            $yearlyVisitorsGraph[] = count($visitorRepo->findVisitsByDateWithParam($year, strval($i), "", "",'country',$country));
+            }
+            $monthlyVisitorsGraph[] = count($visitorRepo->findVisitsByDateWithParam($year, $month, strval($i), "", 'country',$country));
+            $i++;
+        }
+       
         $visits = $visitorRepo->findVisitsByCountry($country);
 
         return $this->render('admin/adminStatsCountry.html.twig', [
-            "visits" => $visits
+            "visits" => $visits,
+            "dailyVisitors" => $dailyVisitors,
+            "monthlyVisitors" => $monthlyVisitors,
+            "yearlyVisitors" => $yearlyVisitors,
+            "dailyVisitorsGraph" => json_encode($dailyVisitorsGraph),
+            "monthlyVisitorsGraph" => json_encode($monthlyVisitorsGraph),
+            "yearlyVisitorsGraph" => json_encode($yearlyVisitorsGraph)
         ]);
     }
 }

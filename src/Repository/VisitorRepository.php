@@ -120,7 +120,7 @@ class VisitorRepository extends ServiceEntityRepository
                 ->leftJoin('p.categorie', 'c')
                 ->addSelect('c')
                 ->select('p.id, p.title, COUNT(p.id) AS number, p.image, p.updatedAt, c.name')
-                ->groupBy('p.title')
+                ->groupBy('p.id, p.title, p.image, p.updatedAt, c.name')
                 ->orderBy('number', 'DESC');
                 if($limit){
                     $query->setMaxResults($limit);
@@ -162,7 +162,35 @@ class VisitorRepository extends ServiceEntityRepository
             $query = $query->andWhere('DAY(v.visitedAt) = :day')
                 ->setParameter('day', $day);
             }
+            if($hour){
+            $query = $query->andWhere('HOUR(v.visitedAt) = :hour')
+                ->setParameter('hour', $hour);
+            }
+        
+            $query = $query->orderBy('v.id', 'DESC')
+            ->getQuery();
+                return $query->getResult()
+            ;
+        }
 
+        public function findVisitsByDateWithParam(string $year, string $month, string $day, string $hour, string $param = null, mixed $value): array
+        {
+            $query = $this->createQueryBuilder('v');
+            if($param){
+                $query = $query->andWhere('v.'.$param.' = :param')
+                ->setParameter('param', $value);
+            }if($year){
+                $query = $query->andWhere('YEAR(v.visitedAt) = :year')
+                ->setParameter('year', $year);
+            }
+            if($month){
+            $query = $query->andWhere('MONTH(v.visitedAt) = :month')
+                ->setParameter('month', $month);
+            }
+            if($day){
+            $query = $query->andWhere('DAY(v.visitedAt) = :day')
+                ->setParameter('day', $day);
+            }
             if($hour){
             $query = $query->andWhere('HOUR(v.visitedAt) = :hour')
                 ->setParameter('hour', $hour);
