@@ -10,9 +10,9 @@ use App\Entity\Section;
 use App\Entity\Categorie;
 use App\Form\AddArticleType;
 use App\Form\AddSectionType;
+use App\Form\EditArticleType;
 use Intervention\Image\Image;
 use App\Form\AddCategorieType;
-use App\Form\EditArticleType;
 use App\Form\RegistrationType;
 use App\Twig\SlugifyExtension;
 use App\Service\ChatGptService;
@@ -24,6 +24,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -230,28 +231,99 @@ class AdminController extends AbstractController
     #[Route('/admin/stats', name: 'admin_stats')]
     public function stats(VisitorRepository $visitorRepo): Response
     {
-        $PageListToStringList = [];
-        $nbrOfVisitList = [];
-        $pageList = [];
-
         $date = new DateTime();
         $year = $date->format('Y');
         $month = $date->format('m');
         $day = $date->format('d');
-        $hour = $date->format('H');
-        $visitors = $visitorRepo->findAllByDESC();
-        
+        $visitorLimit = 10;
+        $visitors = $visitorRepo->findAllByDESC($visitorLimit);
+
+        $limit = 1;
+        $countries = $visitorRepo->findOccurrencesByVisitorParam('country', null, $limit);
+        $articles = $visitorRepo->findAllOccurrencesByArticle($limit);
+        $categories = $visitorRepo->findOccurrencesByCategory($limit);
+
+        $i = 1;
+        while ($i < 31){
+            if($i < 24){
+            $dailyVisitorsGraph[] = count($visitorRepo->findVisitsByDate($year, $month, $day, strval($i)));
+            }
+            if ($i < 13){
+            $yearlyVisitorsGraph[] = count($visitorRepo->findVisitsByDate($year, strval($i), "", ""));
+            }
+            $monthlyVisitorsGraph[] = count($visitorRepo->findVisitsByDate($year, $month, strval($i), ""));
+            $i++;
+        }
+
         $dailyVisitors = count($visitorRepo->findVisitsByDate($year, $month, $day, ""));
         $monthlyVisitors = count($visitorRepo->findVisitsByDate($year, $month, "", ""));
         $yearlyVisitors = count($visitorRepo->findVisitsByDate($year, "", "", ""));
 
         return $this->render('admin/adminStats.html.twig', [
             "visitors" => $visitors,
-            "nbrOfVisitList" => $nbrOfVisitList,
-            "pageList" => $pageList,
+            "countries" => $countries,
+            "categories" => $categories,
+            "articles" => $articles,
             "dailyVisitors" => $dailyVisitors,
             "monthlyVisitors" => $monthlyVisitors,
             "yearlyVisitors" => $yearlyVisitors,
+            "dailyVisitorsGraph" => json_encode($dailyVisitorsGraph),
+            "monthlyVisitorsGraph" => json_encode($monthlyVisitorsGraph),
+            "yearlyVisitorsGraph" => json_encode($yearlyVisitorsGraph)
+        ]);
+    }
+    #[Route('/admin/stats/articles', name: 'admin_stats_articles')]
+    public function stat_articles(VisitorRepository $visitorRepo): Response
+    {
+        $visits = $visitorRepo->findAllOccurrencesByArticle();
+
+        return $this->render('admin/adminStatsArticles.html.twig', [
+            "visits" => $visits
+        ]);
+    }
+    #[Route('/admin/stats/article/{id}/{slug}', name: 'admin_stats_article')]
+    public function stat_article(Article $article, VisitorRepository $visitorRepo): Response
+    {
+        $visits = $visitorRepo->findVisitsByPage($article->getId());
+
+        return $this->render('admin/adminStatsArticle.html.twig', [
+            "visits" => $visits
+        ]);
+    }
+    #[Route('/admin/stats/categories', name: 'admin_stats_categories')]
+    public function stat_categories(VisitorRepository $visitorRepo): Response
+    {
+        $visits = $visitorRepo->findAllOccurrencesByArticle();
+
+        return $this->render('admin/adminStatsCategories.html.twig', [
+            "visits" => $visits
+        ]);
+    }
+    #[Route('/admin/stats/category', name: 'admin_stats_category')]
+    public function stat_category(VisitorRepository $visitorRepo): Response
+    {
+        $visits = $visitorRepo->findAllOccurrencesByArticle();
+
+        return $this->render('admin/adminStatsCategory.html.twig', [
+            "visits" => $visits
+        ]);
+    }
+    #[Route('/admin/stats/countries', name: 'admin_stats_countries')]
+    public function stat_countries(VisitorRepository $visitorRepo): Response
+    {
+        $visits = $visitorRepo->findOccurrencesByVisitorParam("country");
+
+        return $this->render('admin/adminStatsCountries.html.twig', [
+            "visits" => $visits
+        ]);
+    }
+    #[Route('/admin/stats/country/{country}', name: 'admin_stats_country')]
+    public function stat_country(string $country, VisitorRepository $visitorRepo): Response
+    {
+        $visits = $visitorRepo->findVisitsByCountry($country);
+
+        return $this->render('admin/adminStatsCountry.html.twig', [
+            "visits" => $visits
         ]);
     }
 }

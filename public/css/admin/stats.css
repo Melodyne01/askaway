@@ -9,9 +9,92 @@
     padding: 50px;
     margin: 20px;
     background-color: var(--primary);
+    border-radius: 30px;
+}
+p{
+    color: var(--white);
+
+}
+.title h2{
+    padding: 20px 0px;
+    font-size: 24px;
+    font-weight: bold;
 }
 .box h1{
     padding: 15px;
+}
+.stats{
+    text-align: center;
+}
+.charts{
+    text-align: center;
+    
+}
+#chart1{
+    background-color: var(--white);
+    border-radius: 30px;
+    width: 55%;
+}
+#chart2{
+width: 40%;
+}
+.chart{
+    min-height: 500px;
+    margin: 0px 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+.column{
+    width: 100%;
+    background-color: var(--white);
+    border-radius: 30px;
+    margin: 0px;
+    margin-bottom: 10px;
+
+}
+.card{
+    width: 100%;
+    height: 250px;
+    margin: 0px;
+}
+.card .infos{    
+    text-align: center;
+}
+.card .title p{
+    font-size: 16px;
+}
+.card .categorie p{
+    font-size: 10px;
+}
+.nbr p{
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.country{
+    background-color: var(--primary-lighter);
+    width: 100%;
+    border-radius: 30px;
+}
+.country img{
+    width: 100px;
+    height: 60px;
+    border-radius: 30px;
+    margin: 10px;
+}
+.categories{
+    padding: 0px;
+}
+.categories .categorie{
+    padding: 50px 0px;
+    margin: 0px;
+    width: 100%;
+}
+.lastVisits{
+    background-color: var(--white);
+    margin-top: 20px;
+    text-align: center;
 }
 .detailChart{
     text-align: center;

@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Article;
 use App\Entity\Visitor;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Visitor>
@@ -64,13 +65,86 @@ class VisitorRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-public function findAllByDESC(): array
+        public function findAllByDESC(?int $limit = null): array
         {
-            return $this->createQueryBuilder('v')
-                ->orderBy('v.id', 'DESC')
-                ->getQuery()
-                ->getResult()
+            $query = $this->createQueryBuilder('v')
+            ->leftJoin('v.page','p')
+            ->addSelect('p')
+            ->orderBy('v.id', 'DESC');
+            if($limit){
+                $query->setMaxResults($limit);
+            };
+            return $query->getQuery()
+            ->getResult()
             ;
+        }
+
+        public function findOccurrencesByVisitorParam($param, ?string $value = null, ?int $limit = null)
+        {
+            $query =  $this->createQueryBuilder('v')
+                ->select('v.'.$param.', COUNT(v.'.$param.') AS number');
+                if($value){
+                    $query = $query->where('v.'.$param.' = :value')
+                        ->setParameter('value', $value);
+                }
+                $query = $query->groupBy('v.'.$param)
+                ->orderBy('number', 'DESC');
+                if($limit){
+                    $query->setMaxResults($limit);
+                };
+            return $query->getQuery()
+                ->getResult();
+        }
+
+        public function findOccurrencesByArticleId($id, ?int $limit = null)
+        {
+            $query = $this->createQueryBuilder('v')
+                ->leftJoin('v.page', 'p')
+                ->addSelect('p')
+                ->select('p.title, COUNT(p.id) AS number')
+                ->where('p.id = :id')
+                ->setParameter('id', $id)
+                ->orderBy('number', 'DESC');
+                if($limit){
+                    $query->setMaxResults($limit);
+                };
+            return $query->getQuery()
+                ->getResult();
+        }
+
+        public function findAllOccurrencesByArticle(?int $limit = null)
+        {
+            $query = $this->createQueryBuilder('v')
+                ->leftJoin('v.page', 'p')
+                ->addSelect('p')
+                ->leftJoin('p.categorie', 'c')
+                ->addSelect('c')
+                ->select('p.id, p.title, COUNT(p.id) AS number, p.image, p.updatedAt, c.name')
+                ->groupBy('p.title')
+                ->orderBy('number', 'DESC');
+                if($limit){
+                    $query->setMaxResults($limit);
+                };
+            return $query->getQuery()
+                ->getResult();
+        }
+        
+
+        public function findOccurrencesByCategory(?int $limit = null)
+        {
+            $query = $this->createQueryBuilder('v')
+                ->leftJoin('v.page', 'p')
+                ->addSelect('p')
+                ->leftJoin('p.categorie', 'c')
+                ->addSelect('c')
+                ->select('c.name, COUNT(c.name) AS number')
+                ->groupBy('c.name')
+                ->orderBy('number', 'DESC');
+                if($limit){
+                    $query->setMaxResults($limit);
+                };
+            return $query->getQuery()
+                ->getResult();
         }
 
         public function findVisitsByDate(string $year, string $month, string $day, string $hour): array
@@ -100,20 +174,25 @@ public function findAllByDESC(): array
             ;
         }
 
-        public function findVisitsByPage(): array
+        public function findVisitsByCountry($country)
         {
             return $this->createQueryBuilder('v')
-                ->select('v.page as page')
+                ->andWhere('v.country = :country')
+                ->setParameter('country', $country)
                 ->orderBy('v.page', 'DESC')
                 ->getQuery()
                 ->getResult()
             ;
         }
-        public function findVisitsNbrByPage(): array
+
+        public function findVisitsByPage($page): array
         {
             return $this->createQueryBuilder('v')
-                ->select('v.page as page')
-                ->orderBy('v.page', 'DESC')
+                ->leftJoin('v.page', 'p')
+                ->addSelect('p')
+                ->andWhere('v.page = :page')
+                ->setParameter('page', $page)
+                ->orderBy('v.visitedAt', 'DESC')
                 ->getQuery()
                 ->getResult()
             ;

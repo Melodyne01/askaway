@@ -22,7 +22,11 @@
 <section class="categories">
     {% for categorie in categories %}
         <a href="{{path('admin_categorie', {name:categorie.name})}}">
-            <div class="categorie">{{categorie.name}}</div>
+            <div class="categorie">
+                <div class="name">
+                    {{categorie.name}}
+                </div>
+            </div>
         </a>
     {% endfor %}
 </section>

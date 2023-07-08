@@ -27,7 +27,7 @@
     padding-bottom: 80px;
 }
 .sections .title{
-    font-size: 34px;
+    font-size: 30px;
     font-weight: bold;
     text-align: justify;
 }
@@ -39,8 +39,8 @@
     text-align: justify;
 }
 .section .title h2{
-    font-size: 40px;
-    padding: 50px 0px;
+    font-size: 32px;
+    padding: 40px 0px;
     font-weight: bold;
 }
 .section .body{
@@ -67,14 +67,15 @@
     .sections .image img{
         width: 70%;
     }
+    .sections .title{
+        font-size: 20px;
+    }
 }
 @media screen and (max-width:1150px) {
     .articleDetail .image img, .section img{
         width: 99%;
     }
-    .sections .title{
-        font-size: 26px;
-    }
+    
     .section .title h2{
         font-size: 22px;
     }
@@ -84,7 +85,7 @@
 }
 @media screen and (max-width:767px) {
     .sections .title{
-        font-size: 20px;
+        font-size: 18px;
     }
     .section .title h2{
         font-size: 20px;
@@ -106,7 +107,7 @@
 }
 @media screen and (max-width:550px) {
     .sections .title{
-        font-size: 16px;
+        font-size: 14px;
     }
     .sections{
         width: 95%;

@@ -89,7 +89,11 @@
     <div class="categories">
         {% for category in categories %}
         <a href="{{path('categorie', {name:category.name})}}">
-            <div class="categorie">{{category.name}}</div>
+            <div class="categorie">
+                <div class="name">
+                    {{category.name}}
+                </div>
+            </div>
         </a>
         {% endfor %}
     </div>
@@ -126,14 +130,15 @@
             var article = document.createElement('div');
             article.className = 'article';
 
-            slug = item.title.toLowerCase()
+            slug = suggestion.title.toLowerCase()
             .toString()
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
+            .replace(/!/g, '')
             .toLowerCase()
             .trim()
             .replace(/\s+/g, '-')
-            .replace(/[^\w-]+/g, '')
+            .replace(/[^\w-]+/g, '-')
             .replace(/--+/g, '-')
             
             var link = document.createElement('a');
@@ -233,11 +238,13 @@ function loadMoreItems(loadMoreButton) {
             .toString()
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
+            .replace(/!/g, '')
             .toLowerCase()
             .trim()
             .replace(/\s+/g, '-')
-            .replace(/[^\w-]+/g, '')
+            .replace(/[^\w-]+/g, '-')
             .replace(/--+/g, '-')
+
 
             var link = document.createElement('a');
             link.href= '/article/' + item.id + '/' + slug;

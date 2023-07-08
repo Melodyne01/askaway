@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('css/admin/stats.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block head %}
+<title>Askaway | Admin</title>
+<meta name="robots" content="noindex">
+{% endblock %}
+
+{% block body %}
+<section class="lastVisits">
+    <a href="#">
+        <div class="title">
+            <h2>Les dernières visites</h2>
+        </div>
+        <div class="detailChart">
+            {% for visit in visits %}
+            <div class="line">
+                <div class="option" id="ip">{{visit.ip}}</div>
+                <div class="option" id="region">{{visit.city}}</div>
+                <div class="option" id="country">{{visit.country}}</div>
+                <div class="option" id="date">{{visit.visitedAt|date("d-m-y H:i:s")}}</div>
+                <div class="option" id="page">{{visit.page}}</div>
+                <hr>
+            </div>
+            {% else %}
+            Aucune données présente pour le moment            
+            {% endfor %}
+        </div>
+    </a>
+</section>
+{% endblock %}

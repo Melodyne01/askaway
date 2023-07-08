@@ -2,7 +2,7 @@
     text-align: center;
     padding: 20px;
 }
-.categories a{
+.categories .name {
     color: white;
     text-decoration: none;
 }
@@ -17,6 +17,9 @@
 }
 .categorie:hover{
     opacity: 80%;
+}
+.categorie .nbr{
+    color: white;
 }
 
 @media screen and (max-width:620px) {

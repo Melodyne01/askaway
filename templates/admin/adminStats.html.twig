@@ -6,8 +6,11 @@
 {% endblock %}
 
 {% block stylesheets %}
+<link href="{{ asset('css/index.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/admin/categories.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/admin/stats.css') }}" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 {% endblock %}
 
 {% block body %}
@@ -25,20 +28,213 @@
         <h1>{{yearlyVisitors}}</h1>
     </div>
 </section>
-<section>
-    <div class="detailChart">
-        {% for visitor in visitors %}
-        <div class="line">
-            <div class="option" id="ip">{{visitor.ip}}</div>
-            <div class="option" id="region">{{visitor.city}}</div>
-            <div class="option" id="country">{{visitor.country}}</div>
-            <div class="option" id="date">{{visitor.visitedAt|date("d-m-y H:i:s")}}</div>
-            <div class="option" id="page">{{visitor.page}}</div>
-            <hr>
-        </div>
-        {% else %}
-        Aucune données présente pour le moment            
-        {% endfor %}
+<section class="charts">
+    <div class="chart" id="chart1">
+        <a href="#">
+            <canvas id="myChart"></canvas>
+            <canvas id="myChart2"></canvas>
+            <canvas id="myChart3"></canvas>
+        </a>
+    </div>
+    <div class="chart" id="chart2">
+        <section class="stats">
+            <a href="{{path('admin_stats_articles')}}">
+                <div class="column">
+                    <div class="articles">
+                        <div class="title">
+                            <h2>Le top article</h2>
+                        </div>
+                        {% for article in articles %}
+                        <div class="article">
+                            <a aria-label="linkToArticle" href="{{path('admin_stats_article', {id: article.id, slug: article.title|slugify})}}">
+                                <div class="card">
+                                    <div class="image">
+                                        <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
+                                    </div>
+                                    <div class="infos">
+                                        <div class="categorie">
+                                            <p>{{article.name}}</p>
+                                        </div>
+                                        <div class="title">
+                                            <p>{{article.title}}</p>
+                                        </div>
+                                        <div class="date">
+                                            <p>{{article.updatedAt|date("Y-m-d")}}</p>
+                                        </div>
+                                        <div class="nbr">
+                                            <p>{{article.number}} vues</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </a>
+            <a href="{{path('admin_stats_categories')}}">
+                <div class="column">
+                    <div class="categories">
+                        <div class="title">
+                            <h2>La top catégorie</h2>
+                        </div>
+                        {% for category in categories %}
+                        <a href="{{path('categorie', {name:category.name})}}">
+                            <div class="categorie">
+                                <p>{{category.name}}</p>
+                            <div class="nbr">
+                                <p>{{category.number}} vues</p>
+                            </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </a>
+            <a href="{{path('admin_stats_countries')}}">
+                <div class="column">
+                    <div class="countries">
+                        <div class="title">
+                            <h2>Le top pays</h2>
+                        </div>
+                        {% for country in countries %}
+                        <a href="{{path('admin_stats_country', {country:country.country})}}">
+                            <div class="country">
+                                <div class="image">
+                                    <img src="{{ asset('/image/loading_icon.gif')}}" onload="afficherDrapeau(this,'{{country.country}}')">
+                                </div>
+                                <div class="infos">
+                                    <div class="categorie">
+                                        <p>{{country.country}}</p>
+                                        <div class="nbr">
+                                            <p>{{country.number}} vues</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </a>
+        </section>
     </div>
 </section>
+
+<section class="lastVisits">
+    <a href="#">
+        <div class="title">
+            <h2>Les dernières visites</h2>
+        </div>
+        <div class="detailChart">
+            {% for visitor in visitors %}
+            <div class="line">
+                <div class="option" id="ip">{{visitor.ip}}</div>
+                <div class="option" id="region">{{visitor.city}}</div>
+                <div class="option" id="country">{{visitor.country}}</div>
+                <div class="option" id="date">{{visitor.visitedAt|date("d-m-y H:i:s")}}</div>
+                <div class="option" id="page">{{visitor.page}}</div>
+                <hr>
+            </div>
+            {% else %}
+            Aucune données présente pour le moment            
+            {% endfor %}
+        </div>
+    </a>
+</section>
+{% endblock %}
+{% block js %}
+<script>
+    function afficherDrapeau(element, pays) {
+    
+        let controller = new AbortController();
+        fetch(`https://restcountries.com/v3/name/${pays}`,{
+            signal: controller.signal
+        })
+        .then(response => response.json())
+        .then(data => {
+            const drapeau = data[0].flags[0];
+            if (element.src !== drapeau) {
+                // Mettre à jour le src de l'élément img correspondant
+                element.src = drapeau;
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+</script>
+
+<script>
+
+    const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h","17h", "18h", "19h", "20h", "21h", "22h", "23h"],
+      datasets: [{
+        label: 'Aujourd\'hui',
+        data: {{dailyVisitorsGraph | raw}},
+        borderColor: 'rgb(0, 0, 0)',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+<script>
+  const ctx2 = document.getElementById('myChart2');
+
+  new Chart(ctx2, {
+    type: 'line',
+    data: {
+        labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16","17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"],
+      datasets: [{
+        label: 'Ce mois ci',
+        data: {{monthlyVisitorsGraph | raw}},
+        borderColor: 'rgb(0, 0, 0)',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+<script>
+  const ctx3 = document.getElementById('myChart3');
+
+  new Chart(ctx3, {
+    type: 'line',
+    data: {
+        labels: [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"],
+
+      datasets: [{
+        label: 'Cette année',
+        data: {{yearlyVisitorsGraph | raw}},
+        borderColor: 'rgb(0, 0, 0)',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+ 
 {% endblock %}

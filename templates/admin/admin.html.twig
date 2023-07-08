@@ -36,15 +36,15 @@
     {% for article in articles %}
         <div class="article">
             <a href="{{path('admin_sections', {id: article.id, slug: article.title|slugify})}}">
-                {% if article.online %}
-                <div class="card" id="online">
-                {% else %}
-                <div class="card" id="offline">
-                {% endif %}
+                <div class="card">
                     <div class="image">
                         <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}} image">
                     </div>
-                    <div class="infos">
+                    {% if article.online %}
+                        <div class="infos" id="online">
+                        {% else %}
+                        <div class="infos" id="offline">
+                        {% endif %}
                         <div class="categorie">
                             <p>{{article.categorie}}</p>
                         </div>
