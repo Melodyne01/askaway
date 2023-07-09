@@ -121,25 +121,23 @@
     </div>
 </section>
 <section class="lastVisits">
-    <a href="#">
-        <div class="title">
-            <h2>Les dernières visites</h2>
+    <div class="title">
+        <h2>Les dernières visites</h2>
+    </div>
+    <div class="detailChart">
+        {% for visitor in visitors %}
+        <div class="line">
+            <div class="option" id="ip">{{visitor.ip}}</div>
+            <div class="option" id="region">{{visitor.city}}</div>
+            <div class="option" id="country">{{visitor.country}}</div>
+            <div class="option" id="date">{{visitor.visitedAt|date("d-m-y H:i:s")}}</div>
+            <div class="option" id="page">{{visitor.page}}</div>
+            <hr>
         </div>
-        <div class="detailChart">
-            {% for visitor in visitors %}
-            <div class="line">
-                <div class="option" id="ip">{{visitor.ip}}</div>
-                <div class="option" id="region">{{visitor.city}}</div>
-                <div class="option" id="country">{{visitor.country}}</div>
-                <div class="option" id="date">{{visitor.visitedAt|date("d-m-y H:i:s")}}</div>
-                <div class="option" id="page">{{visitor.page}}</div>
-                <hr>
-            </div>
-            {% else %}
-            Aucune données présente pour le moment            
-            {% endfor %}
-        </div>
-    </a>
+        {% else %}
+        Aucune données présente pour le moment            
+        {% endfor %}
+    </div>
 </section>
 {% endblock %}
 {% block js %}

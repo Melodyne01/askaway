@@ -27,6 +27,7 @@
     border-radius: 30px;
     border: 1px solid var(--black);
     color: var(--black);
+    background-color: var(--primary);
 }
 .sectionTitle{
     font-size: 34px;
@@ -52,8 +53,7 @@
     border-radius: 30px;
 }
 .card .infos{
-    position: absolute;
-    
+    position: absolute;  
     text-align: center;
     bottom: 0;
     background-color: var(--primary-lighter);
