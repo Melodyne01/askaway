@@ -47,7 +47,14 @@
     font-size: 26px;
     padding: 15px 0px;
 }
-
+.otherArticles {
+    opacity: 0;
+    transition: opacity 0.5s;
+ }
+ 
+ .otherArticles.loaded {
+    opacity: 1;
+ }
 .section .link{
     background-color: var(--black);
     text-align: center;

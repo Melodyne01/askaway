@@ -111,5 +111,23 @@
 {% endblock %}
 
 {% block js %}
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+   var lazyloadDivs = document.querySelectorAll(".otherArticles");
+   
+   var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+         if (entry.isIntersecting) {
+            entry.target.classList.add("loaded");
+            observer.unobserve(entry.target);
+            console.log("loaded");
+         }
+      });
+   });
+   
+   lazyloadDivs.forEach(function(div) {
+      observer.observe(div);
+   });
+});
+</script>
 {% endblock %}
