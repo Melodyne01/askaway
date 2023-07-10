@@ -15,7 +15,7 @@
 {% block body %}
 <section class="articleDetail">
     <div class="image">
-        <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}}">
+        <img src="{{ asset('/upload/'~ article.image)}}" alt="{{article.title}}" loading="lazy">
     </div>
     <br>
     {% if article.imageSource %}
@@ -40,7 +40,7 @@
             {% endif %}
             {% if section.image %}
             <div class="image">
-                <img src="{{ asset('/upload/'~ section.image)}}" alt="{{section.title}}">
+                <img src="{{ asset('/upload/'~ section.image)}}" alt="{{section.title}}" loading="lazy">
                 {% if section.imageSource %}
                 <div class="imageSource">
                     {{section.imageSource}}
@@ -111,27 +111,5 @@
 {% endblock %}
 
 {% block js %}
-<script>
-    var lazyContent = document.getElementById('otherArticles');
-    var options = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.5
-    };
 
-    var observer = new IntersectionObserver(function(entries, observer) {
-    entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-        // Charger le contenu de manière asynchrone ici
-        // Par exemple, en utilisant une requête AJAX pour récupérer les données
-        // ou en modifiant le contenu de la div à l'aide de JavaScript
-        lazyContent.style.display = 'block';
-        // Arrêter d'observer une fois que le contenu est chargé
-        observer.unobserve(entry.target);
-        }
-    });
-    }, options);
-
-    observer.observe(lazyContent);
-</script>
 {% endblock %}

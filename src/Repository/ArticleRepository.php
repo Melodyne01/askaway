@@ -125,6 +125,22 @@ class ArticleRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function findLastOnlineByCategory(Categorie $categeory, ?int $limit = null): array
+    {
+        $query = $this->createQueryBuilder('a')
+            ->andWhere('a.categorie = :cateogrie')
+            ->setParameter('cateogrie', $categeory)
+            ->andWhere('a.online = :online')
+            ->setParameter('online', 1)
+            ->orderBy('a.id', 'DESC');
+            if ($limit){
+                $query
+                ->setMaxResults($limit);
+            }
+        return $query->getQuery()
+        ->getResult()
+        ;
+    }
     public function findSuggestionsByKeyword(string $keyword): array
     {
         return $this->createQueryBuilder('a')

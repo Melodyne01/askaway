@@ -87,9 +87,10 @@ class Controller extends AbstractController
         if(!$article->isOnline()){
             return $this->createAccessDeniedException();
         }
+        $limit = 10;
         $this->addVisit($article);
         $lastArticles = $articleRepo->find10LastArticles();
-        $otherArticleByCateorgy = $articleRepo->findAllOnlineByCategory($article->getCategorie());
+        $otherArticleByCateorgy = $articleRepo->findLastOnlineByCategory($article->getCategorie(), 10);
 
         $sectionByArticle = $sectionRepo->findAllByArticle($article);
         $metaDesc = substr($sectionRepo->findOneByArticle($article)[0]["body"], 0, 150);

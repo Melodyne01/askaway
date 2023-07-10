@@ -138,7 +138,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @return mixed
 	 */
 	function eraseCredentials() {
-                            }
+    }
 	
 	/**
 	 * Returns the identifier for this user (e.g. its username or email address).
@@ -146,8 +146,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @return string
 	 */
 	function getUserIdentifier(): string {
-                                return $this->getId();
-                            }
+        return $this->getId();
+    }
 
     /**
      * @return Collection<int, Section>
