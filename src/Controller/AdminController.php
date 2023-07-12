@@ -241,13 +241,12 @@ class AdminController extends AbstractController
         $month = $date->format('m');
         $day = $date->format('d');
 
-        $visitorLimit = 20;
-        $visitors = $visitorRepo->findAllByDESC($visitorLimit);
+        $visitors = $visitorRepo->findVisitsByDate($year, $month, $day, "");
 
         $limit = 1;
         $countries = $visitorRepo->findOccurrencesByVisitorParam('country', null, $limit);
         $articles = $visitorRepo->findAllOccurrencesByArticle($limit);
-        $categories = $visitorRepo->findOccurrencesByCategory($limit);
+        $categories = $visitorRepo->findOccurrencesByCategoryAndRatio($limit);
 
         $i = 1;
         while ($i < 31){
@@ -261,7 +260,7 @@ class AdminController extends AbstractController
             $i++;
         }
 
-        $dailyVisitors = count($visitorRepo->findVisitsByDate($year, $month, $day, ""));
+        $dailyVisitors = count($visitors);
         $monthlyVisitors = count($visitorRepo->findVisitsByDate($year, $month, "", ""));
         $yearlyVisitors = count($visitorRepo->findVisitsByDate($year, "", "", ""));
 
@@ -334,20 +333,48 @@ class AdminController extends AbstractController
     #[Route('/admin/stats/categories', name: 'admin_stats_categories')]
     public function stat_categories(VisitorRepository $visitorRepo): Response
     {
-        $visits = $visitorRepo->findAllOccurrencesByArticle();
+        $categories = $visitorRepo->findOccurrencesByCategoryAndRatio();
 
         return $this->render('admin/adminStatsCategories.html.twig', [
-            "visits" => $visits
+            "categories" => $categories
         ]);
     }
 
-    #[Route('/admin/stats/category', name: 'admin_stats_category')]
-    public function stat_category(VisitorRepository $visitorRepo): Response
+    #[Route('/admin/stats/category/{name}', name: 'admin_stats_category')]
+    public function stat_category(Categorie $categorie, VisitorRepository $visitorRepo): Response
     {
-        $visits = $visitorRepo->findAllOccurrencesByArticle();
+        $date = new DateTime();
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');
+
+        $visits = $visitorRepo->findAllVisitsbyCategory($categorie->getName());
+        
+        $dailyVisitors = count($visitorRepo->findVisitsByDateByArticleCategory($year, $month, $day, "",$categorie->getName()));
+        $monthlyVisitors = count($visitorRepo->findVisitsByDateByArticleCategory($year, $month, "", "",$categorie->getName()));
+        $yearlyVisitors = count($visitorRepo->findVisitsByDateByArticleCategory($year, "", "", "",$categorie->getName()));
+
+        $i = 1;
+        while ($i < 31){
+            if($i < 24){
+            $dailyVisitorsGraph[] = count($visitorRepo->findVisitsByDateByArticleCategory($year, $month, $day, strval($i),$categorie->getName()));
+            }
+            if ($i < 13){
+            $yearlyVisitorsGraph[] = count($visitorRepo->findVisitsByDateByArticleCategory($year, strval($i), "", "",$categorie->getName()));
+            }
+            $monthlyVisitorsGraph[] = count($visitorRepo->findVisitsByDateByArticleCategory($year, $month, strval($i), "",$categorie->getName()));
+            $i++;
+        }
 
         return $this->render('admin/adminStatsCategory.html.twig', [
-            "visits" => $visits
+            "visits" => $visits,
+            "category" => $categorie,
+            "dailyVisitors" => $dailyVisitors,
+            "monthlyVisitors" => $monthlyVisitors,
+            "yearlyVisitors" => $yearlyVisitors,
+            "dailyVisitorsGraph" => json_encode($dailyVisitorsGraph),
+            "monthlyVisitorsGraph" => json_encode($monthlyVisitorsGraph),
+            "yearlyVisitorsGraph" => json_encode($yearlyVisitorsGraph)
         ]);
     }
 
@@ -370,7 +397,6 @@ class AdminController extends AbstractController
     #[Route('/admin/stats/country/{country}', name: 'admin_stats_country')]
     public function stat_country(string $country, VisitorRepository $visitorRepo): Response
     {
-
         $date = new DateTime();
         $year = $date->format('Y');
         $month = $date->format('m');

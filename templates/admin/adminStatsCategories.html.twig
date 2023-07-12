@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
 <link href="{{ asset('css/index.css') }}" rel="stylesheet" />
-<link href="{{ asset('css/form.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/admin/stats.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/admin/categories.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block head %}
@@ -10,5 +11,19 @@
 {% endblock %}
 
 {% block body %}
-Categories
-{% endblock%}
+<div class="categories">
+    {% for category in categories %}
+    <a href="{{path('admin_stats_category', {name:category.name})}}">
+        <div class="categorie">
+            <p>{{category.name}}</p>
+        <div class="nbr">
+            <p>{{category.number}} vues pour {{category.articleNumber}} articles</p> 
+        </div>
+        <div class="nbr">
+            <p>Moyenne : {{category.ratio}} / article </p>
+        </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

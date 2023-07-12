@@ -83,8 +83,10 @@
                             <div class="categorie">
                                 <p>{{category.name}}</p>
                             <div class="nbr">
-                                <p>{{category.number}} vues</p>
+                                <p>{{category.number}} vues pour {{category.articleNumber}} articles</p> 
                             </div>
+                            <div class="nbr">
+                                <p>Moyenne : {{category.ratio}} / article </p>
                             </div>
                         </a>
                         {% endfor %}
