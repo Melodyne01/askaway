@@ -134,10 +134,8 @@ class VisitorRepository extends ServiceEntityRepository
         {
             $query = $this->createQueryBuilder('v')
                 ->leftJoin('v.page', 'p')
-                ->addSelect('p')
                 ->leftJoin('p.categorie', 'c')
-                ->addSelect('c')
-                ->select('c.name, COUNT(c.name) AS number')
+                ->addSelect('COUNT(v.page) as name, COUNT(v) AS number')
                 ->groupBy('c.name')
                 ->orderBy('number', 'DESC');
                 if($limit){
@@ -147,6 +145,43 @@ class VisitorRepository extends ServiceEntityRepository
                 ->getResult();
         }
 
+        public function findAllVisitsbyCategory(string $category, ?int $limit = null)
+        {
+            $query = $this->createQueryBuilder('v')
+                ->innerJoin('v.page', 'p')
+                ->innerJoin('p.categorie', 'c')
+                ->andWhere('c.name = :categ')
+                ->setParameter('categ', $category)
+                ->orderBy('v.visitedAt', 'DESC');
+                if($limit){
+                    $query->setMaxResults($limit);
+                };
+            return $query->getQuery()
+                ->getResult();
+        }
+
+        public function findOccurrencesByCategoryAndRatio(?int $limit = null)
+        {
+            $query = $this->createQueryBuilder('v')
+                ->leftJoin('v.page', 'p')
+                ->leftJoin('p.categorie', 'c')
+                ->select('c.name, COUNT(v) AS number, COUNT(DISTINCT v.page) as articleNumber, COUNT(v) / COUNT(DISTINCT v.page) as ratio ')
+                ->groupBy('c.name')
+                ->orderBy('number', 'DESC');
+                if($limit){
+                    $query->setMaxResults($limit);
+                };
+
+                $results = $query->getQuery()->getResult();
+
+                foreach ($results as &$result) {
+                    $result['ratio'] = round($result['ratio'], 2);
+                }
+                
+    
+            return $results;
+        }
+        
         public function findVisitsByDate(string $year, string $month, string $day, string $hour): array
         {
             $query = $this->createQueryBuilder('v');
@@ -195,7 +230,37 @@ class VisitorRepository extends ServiceEntityRepository
             $query = $query->andWhere('HOUR(v.visitedAt) = :hour')
                 ->setParameter('hour', $hour);
             }
-        
+
+            $query = $query->orderBy('v.id', 'DESC')
+            ->getQuery();
+                return $query->getResult()
+            ;
+        }
+
+        public function findVisitsByDateByArticleCategory(string $year, string $month, string $day, string $hour, string $category): array
+        {
+            $query = $this->createQueryBuilder('v')
+                ->leftJoin('v.page', 'p')
+                ->leftJoin('p.categorie', 'c')
+                ->andWhere('c.name = :categ')
+                ->setParameter('categ', $category);
+            if($year){
+                $query = $query->andWhere('YEAR(v.visitedAt) = :year')
+                ->setParameter('year', $year);
+            }
+            if($month){
+            $query = $query->andWhere('MONTH(v.visitedAt) = :month')
+                ->setParameter('month', $month);
+            }
+            if($day){
+            $query = $query->andWhere('DAY(v.visitedAt) = :day')
+                ->setParameter('day', $day);
+            }
+            if($hour){
+            $query = $query->andWhere('HOUR(v.visitedAt) = :hour')
+                ->setParameter('hour', $hour);
+            }
+
             $query = $query->orderBy('v.id', 'DESC')
             ->getQuery();
                 return $query->getResult()
@@ -207,7 +272,7 @@ class VisitorRepository extends ServiceEntityRepository
             return $this->createQueryBuilder('v')
                 ->andWhere('v.country = :country')
                 ->setParameter('country', $country)
-                ->orderBy('v.page', 'DESC')
+                ->orderBy('v.visitedAt', 'DESC')
                 ->getQuery()
                 ->getResult()
             ;
