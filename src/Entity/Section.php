@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: SectionRepository::class)]
 
-#[ApiResource]
+#[ApiResource(security: "is_granted('ROLE_USER')")]
 class Section
 {
     #[ORM\Id]

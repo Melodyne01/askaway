@@ -118,5 +118,4 @@ class SecurityController extends AbstractController
     {
         return $this->render('error/error403.html.twig');
     }
-
 }

@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 
-#[ApiResource]
+#[ApiResource(security: "is_granted('ROLE_USER')")]
 class Categorie
 {
     #[ORM\Id]
