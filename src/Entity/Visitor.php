@@ -2,11 +2,22 @@
 
 namespace App\Entity;
 
-use App\Repository\VisitorRepository;
+use ApiPlatform\Metadata\Get;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\VisitorRepository;
+use ApiPlatform\Metadata\GetCollection;
 
 #[ORM\Entity(repositoryClass: VisitorRepository::class)]
+
+#[ApiResource(
+security: "is_granted('ROLE_USER')",
+ operations: [
+     new Get(),
+     new GetCollection()
+ ],
+)]
 class Visitor
 {
     #[ORM\Id]
