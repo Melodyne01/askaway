@@ -1,0 +1,18 @@
+{
+  "sellerId": "pub-8548677463017804",
+  "sellerType": "PUBLISHER",
+  "isChild": false,
+  "siteUrl": "https://askaway.fr",
+  "supportUrl": "https://askaway.fr",
+  "sellerName": "TNG BLD",
+  "contactInfo": {
+    "contactName": "VOTRE_NOM",
+    "email": "tanguy.baldewyns@gmail.com",
+    "phone": "+32468333021"
+  },
+  "serviceTypes": ["ANALYTICS"],
+  "monetizationTypes": ["ADSENSE"],
+  "platforms": ["WEB"],
+  "mediaTypes": ["DISPLAY"],
+  "sellerTrust": "VERIFIED"
+}
