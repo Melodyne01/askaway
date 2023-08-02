@@ -5,6 +5,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\User;
 use Twig\Environment;
+use App\Entity\Domain;
 use App\Entity\Article;
 use App\Entity\Section;
 use App\Entity\Categorie;
@@ -13,6 +14,7 @@ use App\Form\AddSectionType;
 use App\Form\EditArticleType;
 use Intervention\Image\Image;
 use App\Form\AddCategorieType;
+use App\Form\AddDomainType;
 use App\Form\RegistrationType;
 use App\Twig\SlugifyExtension;
 use App\Service\ChatGptService;
@@ -20,6 +22,7 @@ use App\Repository\ArticleRepository;
 use App\Repository\SectionRepository;
 use App\Repository\VisitorRepository;
 use App\Repository\CategorieRepository;
+use App\Repository\DomainRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -232,8 +235,48 @@ class AdminController extends AbstractController
             'articles' => $articles,
         ]);
     }
+    #[Route('/admin/domains', name: 'admin_domains')]
+    public function domains( Request $request, ManagerRegistry $manager, DomainRepository $domainRepo): Response
+    {
+        $domain = new Domain();
+        $form = $this->createForm(AddDomainType::class, $domain);
 
-    #[Route('/admin/stats', name: 'admin_stats')]
+        $domains = $domainRepo->findAll();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $manager->getManager()->persist($domain);
+            $manager->getManager()->flush();
+            
+            return $this->redirectToRoute('admin_domains');
+        }
+
+        return $this->render('admin/adminDomains.html.twig', [
+            'form' => $form->createView(),
+            'domains' => $domains
+        ]);
+    }
+
+    #[Route('/admin/domain/{name}', name: 'admin_domain')]
+    public function domain(Domain $domain, Request $request, ManagerRegistry $manager, DomainRepository $domainRepo): Response
+    {
+        $form = $this->createForm(AddDomainType::class, $domain);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->getManager()->persist($domain);
+            $manager->getManager()->flush();
+            return $this->redirectToRoute('admin_domains');
+        }
+
+        return $this->render('admin/adminDomain.html.twig', [
+            'form' => $form->createView(),
+            'domain' => $domain
+        ]);
+    }
+
+    #[Route('/admin/stats/', name: 'admin_stats')]
     public function stats(VisitorRepository $visitorRepo): Response
     {
         $date = new DateTime();

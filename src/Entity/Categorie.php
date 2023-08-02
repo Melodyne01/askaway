@@ -7,10 +7,13 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 
-#[ApiResource(security: "is_granted('ROLE_USER')")]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:articles']]
+)]
 class Categorie
 {
     #[ORM\Id]
@@ -19,6 +22,8 @@ class Categorie
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:articles'])]
+
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Article::class)]

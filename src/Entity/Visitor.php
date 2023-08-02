@@ -8,16 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\VisitorRepository;
 use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: VisitorRepository::class)]
 
-#[ApiResource(
-security: "is_granted('ROLE_USER')",
- operations: [
-     new Get(),
-     new GetCollection()
- ],
-)]
+#[ApiResource]
 class Visitor
 {
     #[ORM\Id]
@@ -26,18 +21,28 @@ class Visitor
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:articles'])]
+
     private ?string $ip = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:articles'])]
+
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:articles'])]
+
     private ?string $region = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:articles'])]
+
     private ?string $country = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['read:articles'])]
+
     private ?\DateTimeInterface $visitedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'visitors')]

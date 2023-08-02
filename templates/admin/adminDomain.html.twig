@@ -13,21 +13,21 @@
 {% block body %}
 <section class="form">
     {{ form_start(form) }}
+    <div class="title">Modifier le domaine {{domain.name}}</div>
     <div class="names">
-        {{ form_row(form.firstname, {'attr':{'placeholder':'Prénom'}}) }}
-        {{ form_row(form.lastname, {'attr':{'placeholder':'Nom de famille'}}) }}
-    </div>
-    <div class="email">
-        {{ form_row(form.email, {'attr':{'placeholder':'Adresse e-mail'}}) }}
-    </div>
-    <div class="passwords">
-        {{ form_row(form.password, {'attr':{'placeholder':'Mot de passe'}}) }}
-        {{ form_row(form.confirmPassword, {'attr':{'placeholder':'Confirmer mot de passe'}}) }}
+        {{ form_row(form.name, {'attr':{'placeholder':'Nom du domaine'}}) }}
+        {{ form_row(form.url, {'attr':{'placeholder':'https://exemple.fr'}}) }}
     </div>
     <br>
     <div class="registerBtn">
-        <button onclick="showLoader()" type="submit">Inscrire</button>
+        <button onclick="showLoader()" type="submit">Modifier</button>
     </div>
     {{ form_end(form) }}
+</section>
+<section>
+    <a href="{{path('api_articles', {domain:domain.id})}}">Categories</a>
+</section>
+<section class="delete">
+    <a href="{{path('deleteDomain', {id:domain.id})}}">Supprimer le domaine</a>
 </section>
 {% endblock %}

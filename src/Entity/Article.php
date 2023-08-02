@@ -8,42 +8,66 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 
-#[ApiResource(security: "is_granted('ROLE_USER')")]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:articles']]
+)]
 class Article
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:articles'])]
+
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[Groups(['read:articles'])]
+
     private ?Categorie $categorie = null;
 
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Section::class, cascade:["remove"])]
+    #[Groups(['read:articles'])]
+
     private Collection $section;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:articles'])]
+
     private ?string $title = null;
 
     #[ORM\Column]
+    #[Groups(['read:articles'])]
+
     private ?bool $online = null;
 
+
     #[ORM\Column(length: 255)]
+    #[Groups(['read:articles'])]
+
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['read:articles'])]
+
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['read:articles'])]
+
     private ?string $imageSource = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['read:articles'])]
+
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\OneToMany(mappedBy: 'page', targetEntity: Visitor::class)]
+    #[Groups(['read:articles'])]
+
     private Collection $visitors;
 
     public function __construct()
@@ -68,7 +92,6 @@ class Article
 
         return $this;
     }
-
     /**
      * @return Collection<int, Section>
      */

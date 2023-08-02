@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+<title>Askaway | Admin</title>
+<meta name="robots" content="noindex">
+{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ asset('css/admin/admin.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/index.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/form.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/admin/categories.css') }}" rel="stylesheet" />
+
+{% endblock %}
+
+{% block body %}
+<section class="form">
+    {{ form_start(form) }}
+    <div class="title">Ajouter un domaine</div>
+    <div class="names">
+        {{ form_row(form.name, {'attr':{'placeholder':'Nom du domaine'}}) }}
+        {{ form_row(form.url, {'attr':{'placeholder':'https://exemple.fr'}}) }}
+    </div>
+    <br>
+    <div class="registerBtn">
+        <button onclick="showLoader()" type="submit">Ajouter</button>
+    </div>
+    {{ form_end(form) }}
+</section>
+<section class="categories">
+    {% for domain in domains %}
+        <a href="{{path('admin_domain', {name:domain.name})}}">
+            <div class="categorie">
+                <div class="name">
+                    {{domain.name}}
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+</section>
+{% endblock %}

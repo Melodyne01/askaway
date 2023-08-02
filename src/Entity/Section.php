@@ -8,45 +8,69 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SectionRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SectionRepository::class)]
 
-#[ApiResource(security: "is_granted('ROLE_USER')")]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:articles']]
+)]
 class Section
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:articles'])]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['read:articles'])]
+
     private ?string $title = null;
 
     #[ORM\Column(length: 1000)]
+    #[Groups(['read:articles'])]
+
     private ?string $body = null;
 
     #[ORM\Column(length: 1000, nullable: true)]
+    #[Groups(['read:articles'])]
+
     private ?string $link = null;
 
     #[ORM\ManyToOne(inversedBy: 'section')]
+    
     private ?Article $article = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['read:articles'])]
+
     private ?string $image = null;
 
     #[ORM\Column]
+    #[Groups(['read:articles'])]
+
     private ?int $position = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['read:articles'])]
+
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'sections')]
+    #[Groups(['read:articles'])]
+
     private ?User $createdBy = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['read:articles'])]
+
     private ?string $linkName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['read:articles'])]
+
     private ?string $imageSource = null;
 
     public function getId(): ?int

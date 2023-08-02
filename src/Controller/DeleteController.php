@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
+use Twig\Environment;
+use App\Entity\Domain;
 use App\Entity\Article;
-use App\Entity\Categorie;
 use App\Entity\Section;
+use App\Entity\Categorie;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Twig\Environment;
 
 class DeleteController extends AbstractController
 {
@@ -26,7 +27,7 @@ class DeleteController extends AbstractController
     }
 
     #[Route('/admin/deleteArticleImage/{id}', name: 'deleteArticleImage')]
-    public function deleteArticleImage(Article $article, EntityManagerInterface  $em, Environment $twig)
+    public function deleteArticleImage(Article $article, EntityManagerInterface $em, Environment $twig)
     {
         unlink($this->getParameter('images_directory').'/'. $article->getImage());
         $article->setImage("");
@@ -42,7 +43,7 @@ class DeleteController extends AbstractController
     }
 
     #[Route('/admin/deleteSection/{id}', name: 'deleteSection')]
-    public function deleteSection(Section $section, EntityManagerInterface  $em, Environment $twig)
+    public function deleteSection(Section $section, EntityManagerInterface $em, Environment $twig)
     {
         $article = $section->getArticle();
         if($section->getImage()){
@@ -60,7 +61,7 @@ class DeleteController extends AbstractController
     }
 
     #[Route('/admin/deleteSectionImage/{id}', name: 'deleteSectionImage')]
-    public function deleteSectionImage(Section $section, EntityManagerInterface  $em, Environment $twig)
+    public function deleteSectionImage(Section $section, EntityManagerInterface $em, Environment $twig)
     {
         $article = $section->getArticle();
         unlink($this->getParameter('images_directory').'/'. $section->getImage());
@@ -76,13 +77,22 @@ class DeleteController extends AbstractController
     }
 
     #[Route('/admin/deleteCategorie/{id}', name: 'deleteCategorie')]
-    public function deleteCategorie(Categorie $categorie, EntityManagerInterface  $em)
+    public function deleteCategorie(Categorie $categorie, EntityManagerInterface $em)
     {
         $em->remove($categorie);
         $em->flush();
  
         $this->addFlash("danger", "La categorie à bien été supprimée");
         return $this->redirectToRoute('admin_categories');
+    }
+    #[Route('/admin/deleteDomain/{id}', name: 'deleteDomain')]
+    public function deleteDomain(Domain $domain, EntityManagerInterface $em)
+    {
+        $em->remove($domain);
+        $em->flush();
+ 
+        $this->addFlash("danger", "Le domain à bien été supprimé");
+        return $this->redirectToRoute('admin_domains');
     }
 
 }
