@@ -23,9 +23,6 @@
 <a href="{{path('admin_stats_countries')}}">
     <div class="column">
         <div class="countries">
-            <div class="title">
-                <h2>Le top pays</h2>
-            </div>
             {% for country in countries %}
             <a href="{{path('admin_stats_country', {country:country.country})}}">
                 <div class="country">

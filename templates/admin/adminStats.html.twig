@@ -6,10 +6,9 @@
 {% endblock %}
 
 {% block stylesheets %}
-<link href="{{ asset('css/index.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/admin/categories.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/index.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/admin/stats.css') }}" rel="stylesheet" />
-<link href="{{ asset('css/form.css') }}" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 {% endblock %}
@@ -31,7 +30,7 @@
 </section>
 <section class="charts">
     <div class="chart" id="chart1">
-        <a href="#">
+        <a href="{{path('admin_stats_graphs')}}">
             <canvas id="myChart"></canvas>
             <canvas id="myChart2"></canvas>
             <canvas id="myChart3"></canvas>
@@ -80,7 +79,7 @@
                             <h2>La top catégorie</h2>
                         </div>
                         {% for category in categories %}
-                        <a href="{{path('categorie', {name:category.name})}}">
+                        <a href="{{path('admin_stats_category', {name:category.name})}}">
                             <div class="categorie">
                                 <p>{{category.name}}</p>
                             <div class="nbr">

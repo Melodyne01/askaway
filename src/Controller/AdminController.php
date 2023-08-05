@@ -350,6 +350,9 @@ class AdminController extends AbstractController
         $monthlyVisitors = count($visitorRepo->findVisitsByDateWithParam($year, $month, "", "", 'page',$article->getId()));
         $yearlyVisitors = count($visitorRepo->findVisitsByDateWithParam($year, "", "", "",'page',$article->getId()));
 
+        $countries = $visitorRepo->findCountriesByArticle($article);
+
+
         $i = 1;
         while ($i < 31){
             if($i < 24){
@@ -365,11 +368,63 @@ class AdminController extends AbstractController
         return $this->render('admin/adminStatsArticle.html.twig', [
             "visits" => $visits,
             "dailyVisitors" => $dailyVisitors,
+            "countries" => $countries,
             "monthlyVisitors" => $monthlyVisitors,
             "yearlyVisitors" => $yearlyVisitors,
             "dailyVisitorsGraph" => json_encode($dailyVisitorsGraph),
             "monthlyVisitorsGraph" => json_encode($monthlyVisitorsGraph),
             "yearlyVisitorsGraph" => json_encode($yearlyVisitorsGraph)
+        ]);
+    }
+
+    #[Route('/admin/stats/graphs', name: 'admin_stats_graphs')]
+    public function stat_graphs(VisitorRepository $visitorRepo): Response
+    {
+
+        $date = new DateTime();
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');
+
+        $visitors = $visitorRepo->findVisitsByDate($year, $month, $day, "");    
+
+        $i = 1;
+        while ($i < 31){
+            if($i < 24){
+            $dailyVisitorsGraph[] = count($visitorRepo->findVisitsByDate($year, $month, $day, strval($i)));
+            $dailyPreviousVisitorsGraph[] = count($visitorRepo->findVisitsByDate($year, $month, $day-1, strval($i)));
+            }
+            if ($i < 13){
+            $yearlyVisitorsGraph[] = count($visitorRepo->findVisitsByDate($year, strval($i), "", ""));
+            $yearlyPreviousVisitorsGraph[] = count($visitorRepo->findVisitsByDate($year-1, strval($i), "", ""));
+            }
+            $monthlyVisitorsGraph[] = count($visitorRepo->findVisitsByDate($year, $month, strval($i), ""));
+            $monthlyPreviousVisitorsGraph[] = count($visitorRepo->findVisitsByDate($year, $month-1, strval($i), ""));
+            $i++;
+        }
+
+        $dailyVisitors = count($visitors);
+        $dailyPreviousVisitors = count($visitorRepo->findVisitsByDate($year, $month, $day-1, ""));
+        $monthlyVisitors = count($visitorRepo->findVisitsByDate($year, $month, "", ""));
+        $monthlyPreviousVisitors = count($visitorRepo->findVisitsByDate($year, $month-1, "", ""));
+        $yearlyVisitors = count($visitorRepo->findVisitsByDate($year, "", "", ""));
+        $yearlyPreviousVisitors = count($visitorRepo->findVisitsByDate($year-1, "", "", ""));
+
+
+        return $this->render('admin/adminStatsGraphs.html.twig', [
+            "dailyPreviousVisitors" => $dailyPreviousVisitors,
+            "monthlyPreviousVisitors" => $monthlyPreviousVisitors,
+            "yearlyPreviousVisitors" => $yearlyPreviousVisitors,
+            "dailyVisitors" => $dailyVisitors,
+            "monthlyVisitors" => $monthlyVisitors,
+            "yearlyVisitors" => $yearlyVisitors,
+            "dailyVisitorsGraph" => json_encode($dailyVisitorsGraph),
+            "monthlyVisitorsGraph" => json_encode($monthlyVisitorsGraph),
+            "yearlyVisitorsGraph" => json_encode($yearlyVisitorsGraph),
+            "dailyPreviousVisitorsGraph" => json_encode($dailyPreviousVisitorsGraph),
+            "monthlyPreviousVisitorsGraph" => json_encode($monthlyPreviousVisitorsGraph),
+            "yearlyPreviousVisitorsGraph" => json_encode($yearlyPreviousVisitorsGraph)
+
         ]);
     }
 
@@ -392,7 +447,9 @@ class AdminController extends AbstractController
         $day = $date->format('d');
 
         $visits = $visitorRepo->findAllVisitsbyCategory($categorie->getName());
-        
+
+        $articles = $visitorRepo->findOccurrencesByArticleInCategoryAndRatio($categorie->getName(), 3);
+
         $dailyVisitors = count($visitorRepo->findVisitsByDateByArticleCategory($year, $month, $day, "",$categorie->getName()));
         $monthlyVisitors = count($visitorRepo->findVisitsByDateByArticleCategory($year, $month, "", "",$categorie->getName()));
         $yearlyVisitors = count($visitorRepo->findVisitsByDateByArticleCategory($year, "", "", "",$categorie->getName()));
@@ -411,6 +468,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/adminStatsCategory.html.twig', [
             "visits" => $visits,
+            "articles" => $articles,
             "category" => $categorie,
             "dailyVisitors" => $dailyVisitors,
             "monthlyVisitors" => $monthlyVisitors,

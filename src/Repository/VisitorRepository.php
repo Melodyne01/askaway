@@ -95,6 +95,17 @@ class VisitorRepository extends ServiceEntityRepository
             return $query->getQuery()
                 ->getResult();
         }
+        public function findCountriesByArticle(Article $article)
+        {
+            $query =  $this->createQueryBuilder('v')
+                ->select('v.country', 'COUNT(v.country) AS number')
+                ->andWhere('v.page = :article')
+                ->setParameter('article', $article)
+                ->groupBy('v.country')
+                ->orderBy('number', 'DESC');
+            return $query->getQuery()
+                ->getResult();
+        }
 
         public function findOccurrencesByArticleId($id, ?int $limit = null)
         {
@@ -167,7 +178,7 @@ class VisitorRepository extends ServiceEntityRepository
                 ->leftJoin('p.categorie', 'c')
                 ->select('c.name, COUNT(v) AS number, COUNT(DISTINCT v.page) as articleNumber, COUNT(v) / COUNT(DISTINCT v.page) as ratio ')
                 ->groupBy('c.name')
-                ->orderBy('number', 'DESC');
+                ->orderBy('ratio', 'DESC');
                 if($limit){
                     $query->setMaxResults($limit);
                 };
@@ -180,6 +191,24 @@ class VisitorRepository extends ServiceEntityRepository
                 
     
             return $results;
+        }
+        public function findOccurrencesByArticleInCategoryAndRatio(string $category, ?int $limit = null)
+        {
+            $query = $this->createQueryBuilder('v')
+                ->leftJoin('v.page', 'p')
+                ->addSelect('p')
+                ->leftJoin('p.categorie', 'c')
+                ->addSelect('c')
+                ->select('p.id, p.title, COUNT(p.id) AS number, p.image, p.updatedAt, c.name')
+                ->where('c.name = :category')
+                ->setParameter(':category', $category)
+                ->groupBy('p.id, p.title, p.image, p.updatedAt, c.name')
+                ->orderBy('number', 'DESC');
+                if($limit){
+                    $query->setMaxResults($limit);
+                };
+            return $query->getQuery()
+                ->getResult();
         }
         
         public function findVisitsByDate(string $year, string $month, string $day, string $hour): array

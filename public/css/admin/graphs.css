@@ -1,0 +1,15 @@
+.charts{
+    width: 100%;
+    text-align:left;
+}
+.chart{
+    width: 33%;
+    margin: 0px;
+    display: inline-flex;
+}
+@media screen and (max-width: 760px) {
+    .chart{
+        width: 100%;
+        display: block;
+    }
+}

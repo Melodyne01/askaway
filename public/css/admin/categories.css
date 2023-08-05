@@ -21,11 +21,21 @@
 .categorie .nbr{
     color: white;
 }
+.topArticles .articles{
+    margin-bottom:20px
+}
+.topArticles .article{
+    width: 32%;
+    margin: 10px 0px;
+}
 
 @media screen and (max-width:620px) {
     .categories .categorie{
         width: 70%;
         margin: 5px 0px;
+    }
+    .article{
+        width: 99%;
     }
     
 }
