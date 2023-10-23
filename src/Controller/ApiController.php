@@ -39,23 +39,27 @@ class ApiController extends AbstractController
         return new BinaryFileResponse($filePath);
     }
     #[Route('/admin/api/get/{domain}', name: 'api_articles')]
-    public function apiGetArticles(Domain $domain, ManagerRegistry $manager)
+    public function apiGetArticles(Domain $domain, ManagerRegistry $manager, VisitorRepository $visitorRepo)
     {
         // Créez une instance de HttpClient
         $client = HttpClient::create();
         try {
             // Effectuez l'appel à l'API externe
-            /*$response = $client->request('GET', 'https://127.0.0.1:8000/api/articles');
-            //$response = $client->request('GET', $domain->getUrl().'api/articles');
+            //$response = $client->request('GET', 'https://127.0.0.1:8000/api/articles');
+            $response = $client->request('GET', $domain->getUrl().'api/articles');
 
             // Décodez le contenu JSON de la réponse
             $data = json_decode($response->getContent(), true);
 
             $articles = $data["hydra:member"];
 
-            */
-            $visitorRepo = $manager->getRepository(VisitorRepository::class);
-            $visits = $visitorRepo->findAll();
+            $products = [];
+            foreach ($articles as $productId) {
+                $product = $visitorRepo->find($productId);
+                if ($product) {
+                    $products[] = $product;
+                }
+            }
 
             $date = new DateTime();
             $year = $date->format('Y');

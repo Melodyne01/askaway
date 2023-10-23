@@ -1,15 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block head %}
-<title>Askaway | {{categorie}}</title>
+<title>Askaway | {{currentCategory}}</title>
 <meta name="robots" content="index">
-<meta name="description" content="Explorez notre blog captivant et découvrez une multitude d'articles intéressants sur des sujets variés. Nous proposons des contenus riches et informatifs dans les domaines de la mode, de la cuisine, des voyages, de la technologie et bien plus encore. Plongez dans notre univers passionnant et trouvez l'inspiration pour enrichir votre quotidien. Consulez tous nos articles de la catégorie {{categorie}}">
+<meta name="description" content="Explorez notre blog captivant et découvrez une multitude d'articles intéressants sur des sujets variés. Nous proposons des contenus riches et informatifs dans les domaines de la mode, de la cuisine, des voyages, de la technologie et bien plus encore. Plongez dans notre univers passionnant et trouvez l'inspiration pour enrichir votre quotidien. Consulez tous nos articles de la catégorie {{currentCategory}}">
 {% endblock %}
 
 {% block stylesheets %}
 <link href="{{ asset('css/index.css') }}" rel="stylesheet" />
 {% endblock %}
 {% block body %}
+<section class="categories">
+    <div class="categories">
+        {% for category in categories %}
+            <div class="category">
+                <a href="{{path('categorie', {name:category.name})}}">{{category.name}}</a>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
 <section class="articles">
     {% for article in articles %}
     <div class="article">

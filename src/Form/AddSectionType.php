@@ -2,14 +2,16 @@
 
 namespace App\Form;
 
+use App\Entity\Article;
 use App\Entity\Section;
+use App\Repository\SectionRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class AddSectionType extends AbstractType
@@ -45,6 +47,12 @@ class AddSectionType extends AbstractType
                     '13' => '13',
                     '14' => '14',
                     '15' => '15',
+                    '16' => '16',
+                    '17' => '17',
+                    '18' => '18',
+                    '19' => '19',
+                    '20' => '20',
+                    '21' => '21',
                 ],
             ])
             ->add('imageSource', TextType::class, array('label' => false, 'required' => false))

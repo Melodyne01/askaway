@@ -90,6 +90,23 @@ main{
     font-size: 30px;
     padding: 20px;
 }
+header{
+    display: block;
+}
+.categories{
+    margin: 20px;
+    text-align: center;
+}
+.category{
+    padding: 10px;
+    margin: 5px 0px;
+    display: inline-flex;
+    text-align: justify;
+}
+
+.categories a:hover{
+    opacity: 80%;
+}
 .delete{
     text-align: center;
     padding: 20px;
@@ -146,7 +163,7 @@ main{
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  
+
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

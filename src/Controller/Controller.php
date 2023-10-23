@@ -72,25 +72,29 @@ class Controller extends AbstractController
         ]);
     }
     #[Route('/articles/{name}', name: 'categorie')]
-    public function articles(Categorie $categorie, ArticleRepository $articleRepo): Response
+    public function articles(Categorie $categorie, ArticleRepository $articleRepo, CategorieRepository $categorieRepo): Response
     {
         $articles = $articleRepo->findAllOnlineByCategory($categorie);
+        $categories = $categorieRepo->findAllOrderByNameASC();
 
         return $this->render('/categorie.html.twig', [
             'articles' =>$articles,
-            'categorie' => $categorie
+            'currentCategory' => $categorie,
+            'categories' => $categories
+
         ]);
     }
     #[Route('/article/{id}/{slug}', name: 'article')]
-    public function article(Article $article, SectionRepository $sectionRepo, ArticleRepository $articleRepo): Response
+    public function article(Article $article, SectionRepository $sectionRepo, ArticleRepository $articleRepo, CategorieRepository $categorieRepo): Response
     {
         if(!$article->isOnline()){
             return $this->createAccessDeniedException();
         }
+        $categories = $categorieRepo->findAllOrderByNameASC();
         $limit = 10;
         $this->addVisit($article);
         $lastArticles = $articleRepo->find10LastArticles();
-        $otherArticleByCateorgy = $articleRepo->findLastOnlineByCategory($article->getCategorie(), 10);
+        $otherArticleByCateorgy = $articleRepo->findLastOnlineByCategory($article->getCategorie(), $limit);
 
         $sectionByArticle = $sectionRepo->findAllByArticle($article);
         $metaDesc = substr($sectionRepo->findOneByArticle($article)[0]["body"], 0, 150);
@@ -100,7 +104,8 @@ class Controller extends AbstractController
             'lastArticles' =>$lastArticles,
             'otherArticleByCateorgy' =>$otherArticleByCateorgy,
             'sections' => $sectionByArticle,
-            'metaDesc' => $metaDesc
+            'metaDesc' => $metaDesc,
+            'categories' => $categories
         ]);
     }
     //Search bar Axios route

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Article;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
@@ -127,7 +128,11 @@ class Section
     }
     public function __toString() : string
     {
-        return $this->title;
+        if ($this->title){
+            return $this->title . " - ". $this->position;
+        }else{
+            return "Sans titre - " . $this->position;
+        }
     }
 
     public function getImage(): ?string

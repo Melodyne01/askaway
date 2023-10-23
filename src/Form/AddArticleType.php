@@ -30,7 +30,7 @@ class AddArticleType extends AbstractType
                 'class' => Categorie::class,
                 'query_builder' => function (CategorieRepository $repo) {
                     return $repo->createQueryBuilder('c')
-                    ->orderBy('c.name', 'ASC');;
+                    ->orderBy('c.name', 'ASC');
                 },
                 'required' => true,
                 'label' => false

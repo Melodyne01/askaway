@@ -122,7 +122,6 @@ class AdminController extends AbstractController
             $manager->getManager()->flush();
             return $this->redirectToRoute('admin'); 
         }
-
         $sections = $sectionRepo->findAllByArticle($article);
         $section = new Section();
         $sectionForm = $this->createForm(AddSectionType::class, $section);
@@ -138,7 +137,6 @@ class AdminController extends AbstractController
                     );
                 $section->setImage($fichier);
             }
-
             $section->setArticle($article);
             $section->setCreatedAt(new DateTime('Europe/Paris'));
             $section->setCreatedBy($this->getUser());
@@ -181,7 +179,6 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('admin_sections', [
                 "id" => $article->getId(),
                 "slug" => $twig->getFilter('slugify')->getCallable()($article->getTitle())
-
             ]);
         }
 

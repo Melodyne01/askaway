@@ -33,11 +33,11 @@ input{
 #longInput input{
     width: 510px;
 }
-textarea{
-    resize: none;
-}
 label{
     display: none;
+}
+textarea{
+    resize: none;
 }
 button:hover{
     opacity: 80%;
